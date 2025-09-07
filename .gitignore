@@ -10,6 +10,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 src/test/resources/Drivers/
+build/
 
 ### Backups ###
 .bak
