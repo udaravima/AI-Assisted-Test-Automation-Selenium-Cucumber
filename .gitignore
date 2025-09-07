@@ -1,4 +1,18 @@
+### VS Code ###
 .venv
 .vscode
 .env
-target/*
+
+### IntelliJ IDEA ###
+.idea
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+src/test/resources/Drivers/
+
+### Backups ###
+.bak
+*~
+*.tmp
+*.swp
