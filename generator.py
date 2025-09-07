@@ -238,11 +238,11 @@ def generate_test_prompt(srs_json_path, ui_json_path, prefix="src/test/java/com/
 
         # Read example files
         feature_example = read_file_content(
-            project_root, 'src/test/resources/Features/service_provider_registration.feature')
+            project_root, 'src/test/resources/Features/service_provider_registration.feature.example')
         page_object_example = read_file_content(
-            project_root, f'{prefix}/Pages/ServiceProviderRegistrationPage.java')
+            project_root, f'{prefix}/Pages/ServiceProviderRegistrationPage.java.example')
         steps_example = read_file_content(
-            project_root, f'{prefix}/Steps/ServiceProviderRegistrationSteps.java')
+            project_root, f'{prefix}/Steps/ServiceProviderRegistrationSteps.java.example')
         configs_example = read_file_content(
             project_root, f'{prefix}/Utils/TestConfigs.java')
         utils_example = read_file_content(
