@@ -1,0 +1,68 @@
+{
+    "Sub_Section_ID": "2.1.2",
+    "Sub_Section_Name": "Search a Service Provider",
+    "Type": "Action",
+    "Requirements": [
+        {
+            "REQ_ID": "REQ-SEA-ESP-1",
+            "Description": "Users with the ROLE_SEARCH_SP permission shall be able to search for the existing SP by providing the Service Provider Company Name upon selecting the Service Provider tab and clicking on the 'Search' link or clicking on the 'Search' link under 'Service Provider' on the Provisioning Module home page."
+        },
+        {
+            "REQ_ID": "REQ-SEA-ESP-2",
+            "Description": "Upon entering the SP company name in the search bar and clicking on the Search button, the operations-user shall view search results with specified information/columns."
+        },
+        {
+            "REQ_ID": "REQ-SEA-ESP-3",
+            "Description": "Upon clicking on the Service Provider Id, the admin user shall be able to view the Service Provider information; all information except the Service Provider Id shall remain editable for the admin."
+        },
+        {
+            "REQ_ID": "REQ-SEA-ESP-3.2",
+            "Description": "Upon clicking on each NCS links, the existing values for each SLA parameters shall be displayed."
+        },
+        {
+            "REQ_ID": "REQ-SEA-ESP-4",
+            "Description": "Upon saving, the operations-user shall be able to change any SLA parameters by clicking on the respective link under the Resources section."
+        }
+    ],
+    "Fields": [
+        {
+            "Field_Name": "Search - Service Provider Company Name",
+            "Description": "Input box to provide Service Provider company name for search.",
+            "Type": "String",
+            "Constraints": {
+                "Mandatory": true
+            },
+            "Validation_Rules": [],
+            "Error_Response": []
+        }
+    ],
+    "Results_Columns": [
+        {
+            "Column_Name": "No",
+            "Description": "Auto incremented serial number for each search result."
+        },
+        {
+            "Column_Name": "Service Provider ID",
+            "Description": "Service Provider ID entered during SP profile registration."
+        },
+        {
+            "Column_Name": "Company name",
+            "Description": "Company name entered during SP profile registration."
+        },
+        {
+            "Column_Name": "Enabled",
+            "Description": "Indicates whether the SP profile is enabled or not. If enabled value displayed would be true; if disabled value displayed would be false."
+        },
+        {
+            "Column_Name": "Change Status",
+            "Description": "Provides Operations-User ability to disable the SP profile if it is currently enabled and vice versa. Displays 'Disable' if currently enabled, 'Enable' if currently disabled."
+        }
+    ],
+    "UI_Elements": [],
+    "Flows": [
+        "Select Service Provider tab -> click 'Search' link -> search page displayed",
+        "Enter SP company name in search bar -> click 'Search' button -> display search results table with columns No, Service Provider ID, Company name, Enabled, Change Status",
+        "Click on Service Provider ID -> view SP information page (editable except SP ID)",
+        "Click on NCS links to view existing SLA parameter values"
+    ]
+}

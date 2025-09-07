@@ -1,0 +1,288 @@
+{
+        "Sub_Section_ID": "2.1.1",
+        "Sub_Section_Name": "Register New Service Provider",
+        "Type": "Action",
+        "Requirements": [
+          {
+            "REQ_ID": "REQ-NSP-REG-1",
+            "Description": "Upon clicking on the “Provisioning” tab available in the header, SDP admin shall be directed to the Provisioning module home page."
+          },
+          {
+            "REQ_ID": "REQ-NSP-REG-2",
+            "Description": "Users with the ROLE_CREATE_SP permission shall be able to register a new SP by providing the required information upon selecting the SERVICE PROVIDER tab and clicking on the “Register” link or clicking on the “Register” link under “Service Provider” which appears in the Home page of the Provisioning Module."
+          },
+          {
+            "REQ_ID": "REQ-NSP-REG-2.1",
+            "Description": "When SP accounts get Terminated, Suspended or Removed, the alias associated with the SP account shall no longer be tied to that account."
+          },
+          {
+            "REQ_ID": "REQ-NSP-REG-3",
+            "Description": "Upon entering the necessary details and clicking on the Submit button, a confirmation screen will appear with the entered details."
+          },
+          {
+            "REQ_ID": "REQ-NSP-REG-4",
+            "Description": "If multiple phone numbers are included for the “Black Listed Users” field or the character count of the phone number or expression entered is greater than 30, upon submitting the entered information, a link to view the respective information shall appear."
+          },
+          {
+            "REQ_ID": "REQ-NSP-REG-5",
+            "Description": "Upon cancelling the confirmation page, the entered information shall be disregarded and the user shall be directed to the Provisioning module initial page."
+          },
+          {
+            "REQ_ID": "REQ-NSP-REG-6",
+            "Description": "Once the user verifies the entered details and clicks upon the Confirm button, the SP profile shall be created."
+          },
+          {
+            "REQ_ID": "REQ-NSP-REG-6.1",
+            "Description": "If the profile is successfully created, the success message displayed: \"Service Provider Profile created successfully. Please configure the Service Level Agreement (SLA) for each resource.\""
+          },
+          {
+            "REQ_ID": "REQ-SP-REG-7",
+            "Description": "It is mandatory to configure NCS SLA parameters in order to complete SP provisioning."
+          },
+          {
+            "REQ_ID": "REQ-SP-REG-7.1",
+            "Description": "If the user clicks upon the Submit button, without configuring any of the SLA for each resource, an error message shall be displayed: \"{List of NCS resources for which SLA has not been configured} SLA should be configured\""
+          },
+          {
+            "REQ_ID": "REQ-SP-REG-8",
+            "Description": "For NCS selected when configuring the general attributes, the relevant parameters should be configured for each NCS by clicking upon the respective link."
+          },
+          {
+            "REQ_ID": "REQ-SP-REG-9",
+            "Description": "Configured SLA of the selected resources are shown in a different colour and the SDP Admin can edit them by clicking on each link."
+          },
+          {
+            "REQ_ID": "REQ-SP-REG-10",
+            "Description": "Once the SLA parameters are configured for each selected resource under the respective Service Provider (SP), the SP profile will be created in SDP, and a success message shall be displayed: \"Service Provider registered successfully\""
+          },
+          {
+            "REQ_ID": "REQ-SP-REG-11",
+            "Description": "A configuration email shall be sent from SDP-Admin to SP and Marketing users with the SP details (email template provided)."
+          }
+        ],
+        "Fields": [
+          {
+            "Field_Name": "Service Provider ID",
+            "Description": "Used to capture the service provider ID.",
+            "Type": "String (digits)",
+            "Constraints": {
+              "Mandatory": true,
+              "Unique": true,
+              "Length": {
+                "Exact": 8
+              }
+            },
+            "Validation_Rules": [
+              "Must be digits",
+              "Must be 8 digits long"
+            ],
+            "Error_Response": [
+              "Service Provider Id required",
+              "Service Provider Id already exists",
+              "Please enter 8 digit number for Service Provider Id."
+            ]
+          },
+          {
+            "Field_Name": "Company name",
+            "Description": "Used to capture the name of the company.",
+            "Type": "String",
+            "Constraints": {
+              "Mandatory": true,
+              "MaxLength": 50,
+              "Unique_across_SP_profiles": true
+            },
+            "Validation_Rules": [
+              "Cannot exceed 50 characters"
+            ],
+            "Error_Response": [
+              "Company Name required",
+              "Company Name should be less than 50 characters",
+              "Service Provider already exists"
+            ]
+          },
+          {
+            "Field_Name": "Address",
+            "Description": "Used to capture the address of the company.",
+            "Type": "String",
+            "Constraints": {
+              "Mandatory": false,
+              "MaxLength": 255
+            },
+            "Validation_Rules": [
+              "If provided, must be less than 255 characters"
+            ],
+            "Error_Response": [
+              "Address should be less than 255 characters"
+            ]
+          },
+          {
+            "Field_Name": "Description",
+            "Description": "Used to capture description about the SP.",
+            "Type": "String",
+            "Constraints": {
+              "Mandatory": false,
+              "MaxLength": 255
+            },
+            "Validation_Rules": [
+              "If provided, must be less than 255 characters"
+            ],
+            "Error_Response": [
+              "Description should be less than 255 characters"
+            ]
+          },
+          {
+            "Field_Name": "White Listed Users",
+            "Description": "Used to capture the white-listed phone numbers.",
+            "Type": "String (comma separated MSISDNs or expressions)",
+            "Constraints": {
+              "Mandatory": true,
+              "MinLength_digits": 8,
+              "MaxLength_digits": 15,
+              "MultipleEntries": {
+                "Separator": ","
+              }
+            },
+            "Validation_Rules": [
+              "Each entry should be 8 to 15 digits or valid expression",
+              "Multiple entries separated by commas",
+              "No white-listed number allowed in black-listed list",
+              "Duplicate MSISDNs are not allowed"
+            ],
+            "Error_Response": [
+              "Description should be less than 255 characters",
+              "You can not have a White-listed user in the Blacklisted user list.",
+              "Msisdn are Duplicate in White listed Msisdn."
+            ]
+          },
+          {
+            "Field_Name": "Black Listed Users",
+            "Description": "Used to capture the black-listed phone numbers.",
+            "Type": "String (comma separated MSISDNs)",
+            "Constraints": {
+              "Mandatory": false,
+              "MinLength_digits": 8,
+              "MaxLength_digits": 15,
+              "MultipleEntries": {
+                "Separator": ","
+              }
+            },
+            "Validation_Rules": [
+              "Each entry should be 8 to 15 digits",
+              "Multiple entries separated by commas"
+            ],
+            "Error_Response": []
+          },
+          {
+            "Field_Name": "Dedicated Alias",
+            "Description": "Used to capture the alias dedicated for the respective service provider across all the SP Apps.",
+            "Type": "String (supports regex, case sensitive)",
+            "Constraints": {
+              "Mandatory": false,
+              "MultipleEntries": {
+                "Separator": ","
+              },
+              "SupportsRegex": true,
+              "MustNotBeDuplicateAcrossSPs": true
+            },
+            "Validation_Rules": [
+              "Accepts regular expressions (case sensitive) and valid alphanumeric formats",
+              "Dedicated alias that has already been entered for one SP should not be allowed to be used by another SP at the same time"
+            ],
+            "Error_Response": [
+              "Dedicated alias/es - [Alias Name] or a wildcard format is already in use",
+              "Invalid regular expression/s {Dedicated Alias} please enter valid regular expression."
+            ],
+            "Related_Sub_Sections": [
+              "3.4"
+            ]
+          },
+          {
+            "Field_Name": "SP users",
+            "Description": "Used to select SP-typed User(s) to be assigned for the new SP.",
+            "Type": "Multi-select",
+            "Constraints": {
+              "Mandatory": true,
+              "AtLeastOne": true,
+              "SelectionMechanism": "Use Shift or Ctrl to select multiple",
+              "Source": "SpUsersGroup"
+            },
+            "Validation_Rules": [
+              "At least one SP-typed user should be selected"
+            ],
+            "Error_Response": [
+              "Select atleast one User Name."
+            ]
+          },
+          {
+            "Field_Name": "Marketing Users",
+            "Description": "Used to select marketing user(s) who is allowed to monitor the SP and applications.",
+            "Type": "Multi-select",
+            "Constraints": {
+              "Mandatory": true,
+              "AtLeastOne": true,
+              "SelectionMechanism": "Use Shift or Ctrl to select multiple",
+              "Source": "MarketingUsersGroup"
+            },
+            "Validation_Rules": [
+              "At least one marketing user should be selected"
+            ],
+            "Error_Response": [
+              "Allowed Marketing Users required."
+            ]
+          },
+          {
+            "Field_Name": "Resources",
+            "Description": "Select the resources to be allowed for the SP.",
+            "Type": "Multi-select",
+            "Constraints": {
+              "Mandatory": true,
+              "AtLeastOne": true,
+              "SelectionMechanism": "Use Shift or Ctrl to select multiple",
+              "AllowedValues": [
+                "SMS",
+                "MMS",
+                "BAS",
+                "WAPPUSH",
+                "USSD",
+                "SWS"
+              ],
+              "Source": "DB table"
+            },
+            "Validation_Rules": [
+              "At least one resource should be selected"
+            ],
+            "Error_Response": [
+              "Select atleast one list resource."
+            ]
+          }
+        ],
+        "UI_Elements": [],
+        "Flows": [
+          "Click 'Provisioning' tab in header -> directed to Provisioning module home page",
+          "Select 'SERVICE PROVIDER' tab and click the 'Register' link (or click 'Register' under 'Service Provider' on home page) -> Register Service Provider form displayed",
+          "Fill in required fields (Service Provider ID, Company name, Address, Description, White Listed Users, Black Listed Users, Dedicated Alias, SP users, Marketing Users, Resources)",
+          "Click 'Submit' -> Confirmation screen appears showing entered details",
+          "If user clicks 'Cancel' on confirmation -> discard entered information and return to Provisioning home page",
+          "If user clicks 'Confirm' on confirmation -> system creates SP profile",
+          "If created successfully -> display success message prompting user to configure SLA for each resource and send configuration email to SP and Marketing users"
+        ],
+        "Related_Sub_Sections": [
+          "2.1.1.1",
+          "2.1.1.2",
+          "2.1.1.3",
+          "2.1.1.4",
+          "2.1.1.5",
+          "2.1.1.6"
+        ],
+        "Notifications": {
+          "On_Success_Create_Email": {
+            "Subject": "[M1-SDP] New SDP-ServiceProvider Created",
+            "From": "Admin@m1.com.sg",
+            "To": [
+              "SP",
+              "Marketing-User"
+            ],
+            "Content_Template": "New ServiceProvider with the following details is created.\n<serviceprovider_name> Created\nServiceProvider CompanyName : [serviceprovider_companyname]\nServiceProvider Description : [serviceprovider_description]\nServiceProvider Address : [serviceprovider_address]\nProvisioning UI Url : [provisioning_ui_url]\nRemarks : [remarks]"
+          }
+        }
+      }

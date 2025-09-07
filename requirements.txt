@@ -1,0 +1,10 @@
+langchain_community
+Ipython
+openai
+requests
+camelot-py[cv]
+pandas
+PyPDF2
+python-dotenv
+pdfplumber
+ollama

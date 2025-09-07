@@ -1,0 +1,212 @@
+{
+  "users": {
+    "valid": [
+      {
+        "username": "sdpsp",
+        "password": "test",
+        "email": "sdpsp@example.com",
+        "role": "user"
+      },
+      {
+        "username": "admin",
+        "password": "admin123",
+        "email": "admin@example.com",
+        "role": "admin"
+      },
+      {
+        "username": "testuser",
+        "password": "userpass",
+        "email": "testuser@example.com",
+        "role": "user"
+      }
+    ],
+    "invalid": [
+      {
+        "username": "",
+        "password": "test",
+        "description": "Empty username"
+      },
+      {
+        "username": "   ",
+        "password": "test",
+        "description": "Username with spaces only"
+      },
+      {
+        "username": "user@123",
+        "password": "test",
+        "description": "Username with special characters"
+      },
+      {
+        "username": "verylongusername123456789012345678901234567890",
+        "password": "test",
+        "description": "Very long username"
+      }
+    ]
+  },
+  "passwords": {
+    "weak": [
+      "123",
+      "password",
+      "abc",
+      "qwerty",
+      "123456"
+    ],
+    "strong": [
+      "Str0ngP@ssw0rd123!",
+      "MyP@ssw0rd2024!",
+      "SecureP@ss123!",
+      "ComplexP@ssw0rd!",
+      "TestP@ssw0rd2024!"
+    ]
+  },
+  "security": {
+    "sqlInjection": [
+      "'; DROP TABLE users; --",
+      "' OR '1'='1",
+      "'; INSERT INTO users VALUES ('hacker', 'password'); --",
+      "' UNION SELECT * FROM users --",
+      "admin'--",
+      "admin'/*",
+      "admin'#"
+    ],
+    "xss": [
+      "<script>alert('xss')</script>",
+      "javascript:alert('xss')",
+      "<img src=x onerror=alert('xss')>",
+      "';alert('xss');//",
+      "<iframe src=\"javascript:alert('xss')\"></iframe>",
+      "<svg onload=\"alert('xss')\">",
+      "javascript:void(0)"
+    ],
+    "commandInjection": [
+      "& cat /etc/passwd",
+      "; ls -la",
+      "| whoami",
+      "`id`",
+      "$(whoami)",
+      "& dir",
+      "; dir"
+    ]
+  },
+  "testScenarios": {
+    "login": {
+      "positive": [
+        {
+          "name": "Valid credentials",
+          "username": "sdpsp",
+          "password": "test",
+          "expectedResult": "success"
+        }
+      ],
+      "negative": [
+        {
+          "name": "Invalid username",
+          "username": "invaliduser",
+          "password": "test",
+          "expectedResult": "error"
+        },
+        {
+          "name": "Invalid password",
+          "username": "sdpsp",
+          "password": "wrongpass",
+          "expectedResult": "error"
+        },
+        {
+          "name": "Both invalid",
+          "username": "invaliduser",
+          "password": "wrongpass",
+          "expectedResult": "error"
+        }
+      ]
+    },
+    "userManagement": {
+      "profileUpdates": [
+        {
+          "field": "displayName",
+          "value": "New Display Name",
+          "type": "text"
+        },
+        {
+          "field": "email",
+          "value": "newemail@example.com",
+          "type": "email"
+        },
+        {
+          "field": "phone",
+          "value": "+1234567890",
+          "type": "phone"
+        }
+      ],
+      "preferences": [
+        {
+          "language": "Spanish",
+          "timezone": "UTC-5",
+          "dateFormat": "DD/MM/YYYY",
+          "timeFormat": "24-hour"
+        },
+        {
+          "language": "French",
+          "timezone": "UTC+1",
+          "dateFormat": "DD/MM/YYYY",
+          "timeFormat": "12-hour"
+        }
+      ]
+    },
+    "dashboard": {
+      "widgets": [
+        "User Statistics",
+        "System Performance",
+        "Recent Alerts",
+        "Quick Charts",
+        "Recent Activity",
+        "System Status"
+      ],
+      "quickActions": [
+        "Add New User",
+        "Generate Report",
+        "System Backup",
+        "View Logs",
+        "Settings"
+      ]
+    }
+  },
+  "performance": {
+    "loadTimes": {
+      "loginPage": 3,
+      "dashboard": 3,
+      "userManagement": 4,
+      "reports": 5
+    },
+    "concurrentUsers": {
+      "low": 10,
+      "medium": 50,
+      "high": 100,
+      "stress": 200
+    },
+    "fileSizes": {
+      "small": "1MB",
+      "medium": "10MB",
+      "large": "100MB",
+      "veryLarge": "1GB"
+    }
+  },
+  "browsers": [
+    "chrome",
+    "firefox",
+    "edge"
+  ],
+  "environments": {
+    "test": {
+      "url": "https://m1-impl.hsenidmobile.com/cas/login",
+      "timeout": 10
+    },
+    "staging": {
+      "url": "https://m1-staging.hsenidmobile.com/cas/login",
+      "timeout": 15
+    },
+    "production": {
+      "url": "https://m1.hsenidmobile.com/cas/login",
+      "timeout": 20
+    }
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "pageUrl": "https://m1-impl.hsenidmobile.com/provisioning/home.html",
+  "components": [
+    {
+      "type": "section",
+      "tag": "div",
+      "text": "",
+      "id": "doc2",
+      "classes": "yui-t4",
+      "selector": "#doc2",
+      "role": "",
+      "boundingBox": {
+        "x": 208,
+        "width": 950,
+        "y": 0,
+        "height": 475
+      },
+      "actions": [
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='yui-main']/div[1]/div[1]/div[1]/ul[1]/li[1]/a[1]",
+          "text": "Search",
+          "placeholder": "",
+          "href": "listApplication.html",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='navigation-primary']/li[1]/div[1]/a[1]",
+          "text": "Home",
+          "placeholder": "",
+          "href": "home.html",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='ygmauserinfo']/span[2]/a[2]",
+          "text": "Admin",
+          "placeholder": "",
+          "href": "/admin",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='ynfeet']/a[1]",
+          "text": "",
+          "placeholder": "",
+          "href": "http://www.m1.com.sg/M1/site/M1Corp/",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='copyright']/span[1]/a[1]",
+          "text": "hSenid Software International.",
+          "placeholder": "",
+          "href": "http://www.hsenid.com/",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='navigation-primary']/li[2]/div[1]/a[1]",
+          "text": "Application",
+          "placeholder": "",
+          "href": "listApplication.html",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='yui-main']/div[1]/div[1]/div[1]/ul[1]/li[2]/a[1]",
+          "text": "CR",
+          "placeholder": "",
+          "href": "crListApplication.html",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='ygmauserinfo']/span[2]/a[3]",
+          "text": "Reporting",
+          "placeholder": "",
+          "href": "/m1-sdp",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='ynfeet']/a[2]",
+          "text": "",
+          "placeholder": "",
+          "href": "http://www.hsenid.com/",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='ygmauserinfo']/span[2]/a[1]",
+          "text": "CDR-Query",
+          "placeholder": "",
+          "href": "/cdrquery",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='yui-main']/div[1]/div[1]/div[2]/ul[1]/li[1]/a[1]",
+          "text": "Search",
+          "placeholder": "",
+          "href": "listServiceProvider.html",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='ygmauserinfo']/span[2]/a[4]",
+          "text": "Dashboard",
+          "placeholder": "",
+          "href": "/dashboard",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='navigation-primary']/li[3]/div[1]/a[1]",
+          "text": "Service Provider",
+          "placeholder": "",
+          "href": "listServiceProvider.html",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='yui-main']/div[1]/div[1]/div[2]/ul[1]/li[3]/a[1]",
+          "text": "Dashboard",
+          "placeholder": "",
+          "href": "listAppBySpUser.html",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='ygmauserinfo']/a[1]",
+          "text": "Logout",
+          "placeholder": "",
+          "href": "#",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='yui-main']/div[1]/div[1]/div[1]/ul[1]/li[3]/a[1]",
+          "text": "Retired",
+          "placeholder": "",
+          "href": "listRetiredApplication.html",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='ygmauserinfo']/span[2]/a[5]",
+          "text": "Change Password",
+          "placeholder": "",
+          "href": "/admin/change_password.html",
+          "type": "a",
+          "value": ""
+        },
+        {
+          "role": "",
+          "name": "",
+          "selector": "//*[@id='yui-main']/div[1]/div[1]/div[2]/ul[1]/li[2]/a[1]",
+          "text": "Register",
+          "placeholder": "",
+          "href": "registerServiceProvider.html",
+          "type": "a",
+          "value": ""
+        }
+      ],
+      "fields": [],
+      "attributes": {
+        "id": "doc2",
+        "class": "yui-t4"
+      }
+    }
+  ]
+}

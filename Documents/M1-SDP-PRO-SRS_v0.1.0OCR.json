@@ -1,0 +1,2088 @@
+[
+    {
+        "Section_ID": "2",
+        "Section_Name": "Provisioning Module",
+        "Sub_Sections": [
+            {
+                "Sub_Section_ID": "2.1",
+                "Sub_Section_Name": "Service Provider Profile Management",
+                "Type": "SUMMARY",
+                "Requirements": [
+                    {
+                        "REQ_ID": "REQ-SP-PRO 1",
+                        "Description": "SP SLA is an agreement between SDP and service provider which should be enforced before the application SLA during provisioning."
+                    },
+                    {
+                        "REQ_ID": "REQ-SP-PRO 2",
+                        "Description": "Each of the SP SLAs contain general information on SP and information per NCS."
+                    },
+                    {
+                        "REQ_ID": "REQ-SP-PRO 3",
+                        "Description": "SLA defined at SP level shall serve as the limit for application SLA. i.e. application SLA cannot be defined above SP SLA level restrictions."
+                    },
+                    {
+                        "REQ_ID": "REQ-SP-PRO 4",
+                        "Description": "The SP provisioning UI shall allow users to perform the following actions, based on the access rights assigned: Register new SP, View/Edit SP profile, Search SPs."
+                    },
+                    {
+                        "REQ_ID": "REQ-SP-PRO 5",
+                        "Description": "Operations users with the user role MANAGE_OPERATIONS_LEVEL_SLA_PARAMETERS shall have the authority to create a SP."
+                    }
+                ],
+                "Related_Sub_Sections": [
+                    "2.1.1",
+                    "2.1.2",
+                    "2.1.3",
+                    "2.1.4",
+                    "2.1.5",
+                    "2.1.6"
+                ],
+                "Fields": [],
+                "UI_Elements": [],
+                "Flows": [],
+                "Sub_Sections": [
+                    {
+                        "Sub_Section_ID": "2.1.1",
+                        "Sub_Section_Name": "Register New Service Provider",
+                        "Type": "Action",
+                        "Requirements": [
+                            {
+                                "REQ_ID": "REQ-NSP-REG 1",
+                                "Description": "Upon clicking on the 'Provisioning' tab available in the header, SDP admin shall be directed to the Provisioning module home page as follows."
+                            },
+                            {
+                                "REQ_ID": "REQ-NSP-REG 2",
+                                "Description": "Users with the ROLE_CREATE_SP permission shall be able to register a new SP by providing the required information upon: (1) Selecting the SERVICE PROVIDER tab and clicking on the 'Register' link. (2) Clicking on the 'Register' link under 'Service Provider' which appears in the Home page of the Provisioning Module."
+                            },
+                            {
+                                "REQ_ID": "REQ-NSP-REG 2.1",
+                                "Description": "When SP accounts get Terminated, Suspended or Removed, the alias associated with the SP account shall no longer be tied to that account."
+                            },
+                            {
+                                "REQ_ID": "REQ-NSP-REG 3",
+                                "Description": "Upon entering the necessary details and clicking on the Submit button, a confirmation screen will appear with the entered details."
+                            },
+                            {
+                                "REQ_ID": "REQ-NSP-REG 4",
+                                "Description": "If multiple phone numbers are included for the 'Black Listed Users' field or the character count of the phone number or expression entered is greater than 30, upon submitting the entered information, a link to view the respective information shall appear."
+                            },
+                            {
+                                "REQ_ID": "REQ-NSP-REG 5",
+                                "Description": "Upon cancelling the confirmation page, the entered information shall be disregarded and the user shall be directed to the Provisioning module initial page."
+                            },
+                            {
+                                "REQ_ID": "REQ-NSP-REG 6",
+                                "Description": "Once the user verifies the entered details and clicks upon the Confirm button, the SP profile shall be created."
+                            },
+                            {
+                                "REQ_ID": "REQ-NSP-REG 6.1",
+                                "Description": "If the profile is successfully created, display success message prompting user to configure SLA for each specified resource: 'Service Provider Profile created successfully. Please configure the Service Level Agreement (SLA) for each resource.'"
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-REG 7",
+                                "Description": "It is mandatory to configure NCS SLA parameters in order to complete SP provisioning."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-REG 7.1",
+                                "Description": "If the user clicks Submit without configuring any SLA for each resource, display error: '{List of NCS resources for which SLA has not been configured} SLA should be configured'."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-REG 8",
+                                "Description": "For NCS (SMS/ MMS/ BAS/ WAPPUSH/ USSD/ SWS) selected when configuring the general attributes, the relevant parameters should be configured for each NCS by clicking upon the respective link."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-REG 9",
+                                "Description": "Configured SLA of the selected resources are shown in a different colour and the SDP Admin can edit them by clicking on each link."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-REG 10",
+                                "Description": "Once SLA parameters are configured for each selected resource under the respective SP, the SP profile will be created in SDP and a success message 'Service Provider registered successfully' shall be displayed."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-REG 11",
+                                "Description": "A configuration email shall be sent from SDP-Admin to SP and Marketing users with the SP details using the template specified."
+                            }
+                        ],
+                        "Fields": [
+                            {
+                                "Field_Name": "Service Provider ID",
+                                "Type": "String",
+                                "Constraints": {
+                                    "Mandatory": true,
+                                    "Unique": true,
+                                    "Format": "8 digits"
+                                },
+                                "Validation_Rules": [
+                                    "Must be provided",
+                                    "Must be numeric",
+                                    "Length must be 8 digits"
+                                ],
+                                "Error_Responses": [
+                                    "Service Provider Id required",
+                                    "Service Provider Id already exists",
+                                    "Please enter 8 digit number for Service Provider Id."
+                                ]
+                            },
+                            {
+                                "Field_Name": "Company name",
+                                "Type": "String",
+                                "Constraints": {
+                                    "Mandatory": true,
+                                    "MaxLength": 50,
+                                    "Unique": true
+                                },
+                                "Validation_Rules": [
+                                    "Must be provided",
+                                    "Maximum length 50 characters",
+                                    "Cannot enter a company name which already exists"
+                                ],
+                                "Error_Responses": [
+                                    "Company Name required",
+                                    "Company Name should be less than 50 characters",
+                                    "Service Provider already exists"
+                                ]
+                            },
+                            {
+                                "Field_Name": "Address",
+                                "Type": "String",
+                                "Constraints": {
+                                    "Mandatory": false,
+                                    "MaxLength": 255
+                                },
+                                "Validation_Rules": [
+                                    "If provided, max 255 characters"
+                                ],
+                                "Error_Responses": [
+                                    "Address should be less than 255 characters"
+                                ]
+                            },
+                            {
+                                "Field_Name": "Description",
+                                "Type": "String",
+                                "Constraints": {
+                                    "Mandatory": false,
+                                    "MaxLength": 255
+                                },
+                                "Validation_Rules": [
+                                    "If provided, max 255 characters"
+                                ],
+                                "Error_Responses": [
+                                    "Description should be less than 255 characters"
+                                ]
+                            },
+                            {
+                                "Field_Name": "White Listed Users",
+                                "Type": "String (comma-separated list of MSISDNs)",
+                                "Constraints": {
+                                    "Mandatory": true,
+                                    "MinLengthPerEntry": 8,
+                                    "MaxLengthPerEntry": 15,
+                                    "MultipleEntries": true,
+                                    "Separator": ","
+                                },
+                                "Validation_Rules": [
+                                    "Each MSISDN must be 8 to 15 digits",
+                                    "Entries separated by commas",
+                                    "No duplicate MSISDNs in the list",
+                                    "Cannot include a White-listed MSISDN that exists in Black Listed Users"
+                                ],
+                                "Error_Responses": [
+                                    "Description should be less than 255 characters",
+                                    "You can not have a White-listed user in the Blacklisted user list.",
+                                    "Msisdn are Duplicate in White listed Msisdn."
+                                ]
+                            },
+                            {
+                                "Field_Name": "Black Listed Users",
+                                "Type": "String (comma-separated list of MSISDNs)",
+                                "Constraints": {
+                                    "Mandatory": false,
+                                    "MinLengthPerEntry": 8,
+                                    "MaxLengthPerEntry": 15,
+                                    "MultipleEntries": true,
+                                    "Separator": ","
+                                },
+                                "Validation_Rules": [
+                                    "Each MSISDN must be 8 to 15 digits",
+                                    "Entries separated by commas"
+                                ],
+                                "Error_Responses": []
+                            },
+                            {
+                                "Field_Name": "Dedicated Alias",
+                                "Type": "String (supports multiple entries and regular expressions)",
+                                "Constraints": {
+                                    "Mandatory": false,
+                                    "MultipleEntries": true,
+                                    "Separator": ",",
+                                    "SupportsRegex": true,
+                                    "CaseSensitive": true
+                                },
+                                "Validation_Rules": [
+                                    "Dedicated alias already in use by another SP at same time is not allowed",
+                                    "Will support regular expressions (case sensitive) and valid alphanumeric patterns"
+                                ],
+                                "Error_Responses": [
+                                    "Dedicated alias/es - [Alias Name] or a wildcard format is already in use",
+                                    "Invalid regular expression/s {Dedicated alias} please enter valid regular expression."
+                                ],
+                                "Related_Document_Reference": "Appendix A Section 3.4 Dedicated Alias Regex Pattern Guide"
+                            },
+                            {
+                                "Field_Name": "SP users",
+                                "Type": "Multi-select (SP-typed users list obtained from SpUsersGroup)",
+                                "Constraints": {
+                                    "Mandatory": true,
+                                    "MinSelected": 1
+                                },
+                                "Validation_Rules": [
+                                    "At least one SP-typed user should be selected",
+                                    "Use Shift or Ctrl to select multiple"
+                                ],
+                                "Error_Responses": [
+                                    "Select atleast one User Name."
+                                ]
+                            },
+                            {
+                                "Field_Name": "Marketing Users",
+                                "Type": "Multi-select (MarketingUsersGroup)",
+                                "Constraints": {
+                                    "Mandatory": true,
+                                    "MinSelected": 1
+                                },
+                                "Validation_Rules": [
+                                    "At least one marketing user should be selected",
+                                    "Use Shift or Ctrl to select multiple"
+                                ],
+                                "Error_Responses": [
+                                    "Allowed list Marketing Users required."
+                                ]
+                            },
+                            {
+                                "Field_Name": "Resources",
+                                "Type": "Multi-select (options from DB table)",
+                                "Constraints": {
+                                    "Mandatory": true,
+                                    "MinSelected": 1,
+                                    "AllowedValues": [
+                                        "SMS",
+                                        "MMS",
+                                        "BAS",
+                                        "WAPPUSH",
+                                        "USSD",
+                                        "SWS"
+                                    ]
+                                },
+                                "Validation_Rules": [
+                                    "At least one resource must be selected",
+                                    "Use Shift or Ctrl to select more than one"
+                                ],
+                                "Error_Responses": [
+                                    "Select atleast one list resource."
+                                ]
+                            }
+                        ],
+                        "UI_Elements": [
+                            {
+                                "Label": "Provisioning tab",
+                                "Type": "Navigation Tab",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "SERVICE PROVIDER tab",
+                                "Type": "Tab/Section",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "Register link",
+                                "Type": "Link/Button",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "Register Service Provider Form",
+                                "Type": "Form",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "Submit button",
+                                "Type": "Button",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "Confirmation page",
+                                "Type": "Modal/Screen",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "Confirm button",
+                                "Type": "Button",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "Provisioning module home page",
+                                "Type": "Page",
+                                "Identifier": null
+                            }
+                        ],
+                        "Flows": [
+                            {
+                                "Flow_ID": null,
+                                "Steps": [
+                                    "User clicks 'Provisioning' tab in header",
+                                    "System directs user to Provisioning module home page",
+                                    "User selects 'SERVICE PROVIDER' tab and clicks 'Register' OR clicks 'Register' link under 'Service Provider' on home page",
+                                    "System displays 'Register Service Provider' form",
+                                    "User fills required fields (Service Provider ID, Company name, etc.)",
+                                    "User clicks 'Submit'",
+                                    "System displays confirmation screen with submitted details",
+                                    "User cancels or confirms: if cancel -> discard and redirect to Provisioning home page; if confirm -> create SP profile",
+                                    "On successful creation, display success message and prompt to configure SLA for each resource",
+                                    "User configures SLA per selected NCS resources (SMS/MMS/BAS/WAPPUSH/USSD/SWS) via respective links"
+                                ]
+                            }
+                        ],
+                        "Sub_Sections": [
+                            {
+                                "Sub_Section_ID": "2.1.1.1",
+                                "Sub_Section_Name": "Configuration of SLA for SMS",
+                                "Type": "Action",
+                                "Requirements": [
+                                    {
+                                        "REQ_ID": "REQ-SLA-SMS 1",
+                                        "Description": "Upon clicking on the SMS link available under Resources, operations user shall be able to define the SMS SLA parameters as specified (refer Section 4.2 SMS SLA)."
+                                    },
+                                    {
+                                        "REQ_ID": "REQ-SLA-SMS 2",
+                                        "Description": "After submitting the SLA configurations for SMS, display success message: 'SMS SLA for Service Provider configured successfully'."
+                                    }
+                                ],
+                                "Fields": [
+                                    {
+                                        "Field_Name": "SMS MO Maximum Messages Per Second",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 1000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value must be >= 0",
+                                            "Must be less than or equal to 1000",
+                                            "If not entered or negative => error"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per second required.",
+                                            "Please enter a valid input.",
+                                            "Max message per Second should not be greater than 1000 message per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "SMS MO Maximum Messages Per Day",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 50000000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value must be >= 0",
+                                            "Must be less than or equal to 50,000,000",
+                                            "If Maximum Messages Per Second greater than this value -> error"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per day required.",
+                                            "Please enter a valid input.",
+                                            "Max message per day should not be greater than 50000000 message per day.",
+                                            "Max message per day should be greater than message per Second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "SMS NCS Description (MO section)",
+                                        "Type": "String",
+                                        "Constraints": {
+                                            "Mandatory": false,
+                                            "MaxLength": 255
+                                        },
+                                        "Validation_Rules": [
+                                            "If provided, length must be less than 255 characters"
+                                        ],
+                                        "Error_Responses": [
+                                            "NCS Description is too long."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "SMS MT Maximum Recipients Per Second",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 1000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value must be >= 0",
+                                            "Must be less than or equal to 1000"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per second required.",
+                                            "Please enter a valid input.",
+                                            "Max message per Second should not be greater than 1000 message per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "SMS MT Maximum Recipients Per Day",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 50000000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value must be >= 0",
+                                            "Must be less than or equal to 50,000,000",
+                                            "If Maximum Messages Per Second greater than this value -> error"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per day required.",
+                                            "Please enter a valid input.",
+                                            "Max message per day should not be greater than 50000000 message per day.",
+                                            "Max message per day should be greater than message per Second."
+                                        ]
+                                    }
+                                ],
+                                "UI_Elements": [
+                                    {
+                                        "Label": "SMS link under Resources",
+                                        "Type": "Link",
+                                        "Identifier": null
+                                    },
+                                    {
+                                        "Label": "SMS SLA configuration form",
+                                        "Type": "Form",
+                                        "Identifier": null
+                                    }
+                                ],
+                                "Flows": [
+                                    {
+                                        "Steps": [
+                                            "Operations user clicks SMS link under Resources",
+                                            "System displays SMS SLA configuration fields",
+                                            "User enters values for MO and MT (per second/day) and optional NCS description",
+                                            "User submits the SMS SLA configuration",
+                                            "System validates values (ranges and numeric)",
+                                            "On success, system displays 'SMS SLA for Service Provider configured successfully'"
+                                        ]
+                                    }
+                                ],
+                                "Related_Sub_Sections": []
+                            },
+                            {
+                                "Sub_Section_ID": "2.1.1.2",
+                                "Sub_Section_Name": "Configuration of SLA for MMS",
+                                "Type": "Action",
+                                "Requirements": [
+                                    {
+                                        "REQ_ID": "REQ-SLA-MMS 1",
+                                        "Description": "Upon clicking on the MMS link available under Resources, operations user shall be able to define the MMS SLA parameters as specified (refer Section 4.3 MMS SLA)."
+                                    },
+                                    {
+                                        "REQ_ID": "REQ-SLA-MMS 2",
+                                        "Description": "After submitting the SLA configurations for MMS, display success message: 'MMS SLA for Service Provider configured successfully'."
+                                    }
+                                ],
+                                "Fields": [
+                                    {
+                                        "Field_Name": "MMS MO Maximum Messages Per Second",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 100
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value between 0 and 100"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per second required.",
+                                            "Please enter a valid input.",
+                                            "Max message per Second should not be greater than 100 message per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "MMS MO Maximum Messages Per Day",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 50000000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Must be less than or equal to 50,000,000",
+                                            "If Maximum Messages Per Second greater than this value -> error"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per day required.",
+                                            "Please enter a valid input.",
+                                            "Max message per day should not be greater than 50000000 message per day.",
+                                            "Maximum messages per day should be greater than maximum messages per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "MMS NCS Description",
+                                        "Type": "String",
+                                        "Constraints": {
+                                            "Mandatory": false,
+                                            "MaxLength": 255
+                                        },
+                                        "Validation_Rules": [
+                                            "If provided, length must be less than 255 characters"
+                                        ],
+                                        "Error_Responses": [
+                                            "NCS Description is too long."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "MMS MT Maximum Recipients Per Second",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 100
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value between 0 and 100"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per second required.",
+                                            "Please enter a valid input.",
+                                            "Max message per Second should not be greater than 100 message per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "MMS MT Maximum Recipients Per Day",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 50000000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Must be less than or equal to 50,000,000",
+                                            "If Maximum Messages Per Second greater than this value -> error"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per day required.",
+                                            "Please enter a valid input.",
+                                            "Max message per day should not be greater than 50000000 message per day.",
+                                            "Max message per day should be greater than message per Second."
+                                        ]
+                                    }
+                                ],
+                                "UI_Elements": [
+                                    {
+                                        "Label": "MMS link under Resources",
+                                        "Type": "Link",
+                                        "Identifier": null
+                                    }
+                                ],
+                                "Flows": [
+                                    {
+                                        "Steps": [
+                                            "Operations user clicks MMS link under Resources",
+                                            "System displays MMS SLA configuration fields",
+                                            "User enters values and submits",
+                                            "System validates ranges and numeric input",
+                                            "On success, system displays 'MMS SLA for Service Provider configured successfully'"
+                                        ]
+                                    }
+                                ],
+                                "Related_Sub_Sections": []
+                            },
+                            {
+                                "Sub_Section_ID": "2.1.1.3",
+                                "Sub_Section_Name": "Configuration of SLA for USSD",
+                                "Type": "Action",
+                                "Requirements": [
+                                    {
+                                        "REQ_ID": "REQ-SLA-USSD 1",
+                                        "Description": "Upon clicking on the USSD link available under Resources, operations user shall be able to define the USSD SLA parameters as specified (refer Section 4.6 USSD SLA)."
+                                    },
+                                    {
+                                        "REQ_ID": "REQ-SLA-USSD 2",
+                                        "Description": "After submitting the SLA configurations for USSD, display success message: 'USSD SLA for Service Provider configured successfully'."
+                                    }
+                                ],
+                                "Fields": [
+                                    {
+                                        "Field_Name": "USSD MO Maximum Messages Per Second",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 1000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 1000"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per second required.",
+                                            "Please enter a valid input.",
+                                            "Max message per Second should not be greater than 1000 message per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "USSD MO Maximum Messages Per Day",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 50000000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 50,000,000",
+                                            "If per second value > per day value -> error"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per day required.",
+                                            "Please enter a valid input.",
+                                            "Max message per day should not be greater than 50000000 message per day.",
+                                            "Max message per day should be greater than message per Second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "USSD NCS Description",
+                                        "Type": "String",
+                                        "Constraints": {
+                                            "Mandatory": false,
+                                            "MaxLength": 255
+                                        },
+                                        "Validation_Rules": [
+                                            "If provided, length must be less than 255 characters"
+                                        ],
+                                        "Error_Responses": [
+                                            "NCS Description is too long."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "USSD MT Maximum Recipients Per Second",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 1000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 1000"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per second required.",
+                                            "Please enter a valid input.",
+                                            "Max message per Second should not be greater than 1000 message per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "USSD MT Maximum Recipients Per Day",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 50000000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 50,000,000"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum messages per day required.",
+                                            "Please enter a valid input.",
+                                            "Max message per day should not be greater than 50000000 message per day."
+                                        ]
+                                    }
+                                ],
+                                "UI_Elements": [
+                                    {
+                                        "Label": "USSD link under Resources",
+                                        "Type": "Link",
+                                        "Identifier": null
+                                    }
+                                ],
+                                "Flows": [
+                                    {
+                                        "Steps": [
+                                            "Operations user clicks USSD link under Resources",
+                                            "System displays USSD SLA configuration fields",
+                                            "User enters values and submits",
+                                            "System validates inputs and displays success message on success"
+                                        ]
+                                    }
+                                ],
+                                "Related_Sub_Sections": []
+                            },
+                            {
+                                "Sub_Section_ID": "2.1.1.4",
+                                "Sub_Section_Name": "Configuration of SLA for WAPPUSH",
+                                "Type": "Action",
+                                "Requirements": [
+                                    {
+                                        "REQ_ID": "REQ-SLA-WAPPUSH 1",
+                                        "Description": "Upon clicking on the WAPPUSH link available under Resources, operations user shall be able to define the WAPPUSH SLA parameters as specified (refer Section 4.5 WAPPUSH SLA)."
+                                    },
+                                    {
+                                        "REQ_ID": "REQ-SLA-WAPPUSH 2",
+                                        "Description": "After submitting the SLA configurations for WAP-PUSH, display success message: 'WAP-PUSH SLA for Service Provider configured successfully'."
+                                    }
+                                ],
+                                "Fields": [
+                                    {
+                                        "Field_Name": "WAP-PUSH Maximum Recipients Per Second",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 100
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 100"
+                                        ],
+                                        "Error_Responses": [
+                                            "Max Recipients per Second required.",
+                                            "Please enter a valid input.",
+                                            "Max recipients per second should not be greater than 100 recipients per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "WAP-PUSH Maximum Recipients Per Day",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 50000000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 50,000,000",
+                                            "If per second > per day -> error"
+                                        ],
+                                        "Error_Responses": [
+                                            "Max Recipients per Day required.",
+                                            "Please enter a valid input.",
+                                            "Max recipients per day should not be greater than 500000000 recipients per day.",
+                                            "Max recipients per day should be greater than Max recipients per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "WAP-PUSH NCS Description",
+                                        "Type": "String",
+                                        "Constraints": {
+                                            "Mandatory": false,
+                                            "MaxLength": 255
+                                        },
+                                        "Validation_Rules": [
+                                            "If provided, length must be less than 255 characters"
+                                        ],
+                                        "Error_Responses": [
+                                            "NCS Description is too long."
+                                        ]
+                                    }
+                                ],
+                                "UI_Elements": [
+                                    {
+                                        "Label": "WAPPUSH link under Resources",
+                                        "Type": "Link",
+                                        "Identifier": null
+                                    }
+                                ],
+                                "Flows": [
+                                    {
+                                        "Steps": [
+                                            "Operations user clicks WAPPUSH link under Resources",
+                                            "System displays WAPPUSH SLA configuration fields",
+                                            "User enters values and submits",
+                                            "System validates and displays 'WAP-PUSH SLA for Service Provider configured successfully' on success"
+                                        ]
+                                    }
+                                ],
+                                "Related_Sub_Sections": []
+                            },
+                            {
+                                "Sub_Section_ID": "2.1.1.5",
+                                "Sub_Section_Name": "Configuration of SLA for BAS",
+                                "Type": "Action",
+                                "Requirements": [
+                                    {
+                                        "REQ_ID": "REQ-SLA-BAS 1",
+                                        "Description": "Upon clicking on the BAS link available under Resources, operations user shall be able to define the BAS SLA parameters as specified (refer Section 4.4 BAS SLA)."
+                                    },
+                                    {
+                                        "REQ_ID": "REQ-SLA-BAS 2",
+                                        "Description": "After submitting the SLA configurations for BAS, display success message: 'BAS SLA for Service Provider configured successfully'."
+                                    }
+                                ],
+                                "Fields": [
+                                    {
+                                        "Field_Name": "BAS Maximum Incoming Requests Per Second",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 100
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 100"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum BAS Incoming Requests per second required.",
+                                            "Please enter a valid input.",
+                                            "Max billing per second should not be greater than 100 billing per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "BAS Maximum Incoming Requests Per Day",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 50000000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 50,000,000",
+                                            "If per second > per day -> error"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum BAS Incoming Requests per day required.",
+                                            "Please enter a valid input.",
+                                            "Max billing per day should not be greater than 50000000 billing per day.",
+                                            "Maximum BAS Incoming Requests per day should be greater than maximum requests per second."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "BAS NCS Description",
+                                        "Type": "String",
+                                        "Constraints": {
+                                            "Mandatory": false,
+                                            "MaxLength": 255
+                                        },
+                                        "Validation_Rules": [
+                                            "If provided, length must be less than 255 characters"
+                                        ],
+                                        "Error_Responses": [
+                                            "NCS Description is too long."
+                                        ]
+                                    }
+                                ],
+                                "UI_Elements": [
+                                    {
+                                        "Label": "BAS link under Resources",
+                                        "Type": "Link",
+                                        "Identifier": null
+                                    }
+                                ],
+                                "Flows": [
+                                    {
+                                        "Steps": [
+                                            "Operations user clicks BAS link under Resources",
+                                            "System displays BAS SLA configuration fields",
+                                            "User enters values and submits",
+                                            "System validates and displays 'BAS SLA for Service Provider configured successfully' on success"
+                                        ]
+                                    }
+                                ],
+                                "Related_Sub_Sections": []
+                            },
+                            {
+                                "Sub_Section_ID": "2.1.1.6",
+                                "Sub_Section_Name": "Configuration of SLA for SWS",
+                                "Type": "Action",
+                                "Requirements": [
+                                    {
+                                        "REQ_ID": "REQ-SLA-SWS 1",
+                                        "Description": "Upon clicking on the SWS link available under Resources, operations user shall be able to define the SWS SLA parameters as specified."
+                                    },
+                                    {
+                                        "REQ_ID": "REQ-SLA-SWS 2",
+                                        "Description": "After submitting the SLA configurations for SWS, display success message: 'SWS for Service Provider configured successfully'."
+                                    }
+                                ],
+                                "Fields": [
+                                    {
+                                        "Field_Name": "SWS Maximum Incoming Requests Per Second",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 1000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 1000"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum SWS Incoming Requests per second required.",
+                                            "Please enter a valid input.",
+                                            "Maximum SWS per second should be less than 1,000."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "SWS Maximum Incoming Requests Per Day",
+                                        "Type": "Integer",
+                                        "Constraints": {
+                                            "Mandatory": true,
+                                            "Default": 0,
+                                            "Min": 0,
+                                            "Max": 50000000
+                                        },
+                                        "Validation_Rules": [
+                                            "Must be a digit",
+                                            "Value <= 50,000,000",
+                                            "If per second > per day -> error"
+                                        ],
+                                        "Error_Responses": [
+                                            "Maximum SWS Incoming Requests per day required.",
+                                            "Please enter a valid input.",
+                                            "Maximum SWS per second should be less than 50,000,000."
+                                        ]
+                                    },
+                                    {
+                                        "Field_Name": "SWS NCS Description",
+                                        "Type": "String",
+                                        "Constraints": {
+                                            "Mandatory": false,
+                                            "MaxLength": 255
+                                        },
+                                        "Validation_Rules": [
+                                            "If provided, length must be less than 255 characters"
+                                        ],
+                                        "Error_Responses": [
+                                            "NCS Description is too long."
+                                        ]
+                                    }
+                                ],
+                                "UI_Elements": [
+                                    {
+                                        "Label": "SWS link under Resources",
+                                        "Type": "Link",
+                                        "Identifier": null
+                                    }
+                                ],
+                                "Flows": [
+                                    {
+                                        "Steps": [
+                                            "Operations user clicks SWS link under Resources",
+                                            "System displays SWS SLA configuration fields",
+                                            "User enters values and submits",
+                                            "System validates and displays 'SWS for Service Provider configured successfully' on success"
+                                        ]
+                                    }
+                                ],
+                                "Related_Sub_Sections": []
+                            }
+                        ]
+                    },
+                    {
+                        "Sub_Section_ID": "2.1.2",
+                        "Sub_Section_Name": "Search a Service Provider",
+                        "Type": "Action",
+                        "Requirements": [
+                            {
+                                "REQ_ID": "REQ-SEA-ESP 1",
+                                "Description": "Users with the ROLE_SEARCH_SP permission shall be able to search for the existing SP by providing the Service Provider Company Name upon selecting Service Provider tab and clicking on 'Search' link or clicking 'Search' under Service Provider on home page."
+                            },
+                            {
+                                "REQ_ID": "REQ-SEA-ESP 2",
+                                "Description": "Upon entering the SP company name and clicking Search, operations-user shall view search results with information (No, Service Provider ID, Company name, Enabled, Change Status)."
+                            },
+                            {
+                                "REQ_ID": "REQ-SEA-ESP 3",
+                                "Description": "Upon clicking on the Service Provider Id, admin user shall be able to view SP information. All information except the Service Provider Id shall remain editable for the admin."
+                            },
+                            {
+                                "REQ_ID": "REQ-SEA-ESP 3.2",
+                                "Description": "Upon clicking on each NCS link, the existing values for each SLA parameter shall be displayed."
+                            },
+                            {
+                                "REQ_ID": "REQ-SEA-ESP 4",
+                                "Description": "Upon saving, operations-user shall be able to change any SLA parameters by clicking respective link under Resources section."
+                            }
+                        ],
+                        "Fields": [
+                            {
+                                "Field_Name": "Search Bar: Service Provider Company Name",
+                                "Type": "String",
+                                "Constraints": {
+                                    "Mandatory": true
+                                },
+                                "Validation_Rules": [
+                                    "Provide company name to search"
+                                ],
+                                "Error_Responses": []
+                            },
+                            {
+                                "Field_Name": "Search Results Columns",
+                                "Type": "Structured",
+                                "Constraints": {},
+                                "Validation_Rules": [],
+                                "Error_Responses": [],
+                                "Details": [
+                                    "No (auto incremented serial number)",
+                                    "Service Provider ID (entered during SP registration)",
+                                    "Company name",
+                                    "Enabled (true/false)",
+                                    "Change Status (Enable/Disable depending current status)"
+                                ]
+                            }
+                        ],
+                        "UI_Elements": [
+                            {
+                                "Label": "Search link under Service Provider",
+                                "Type": "Link/Button",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "Search results table",
+                                "Type": "Table",
+                                "Identifier": null
+                            }
+                        ],
+                        "Flows": [
+                            {
+                                "Steps": [
+                                    "User navigates to Provisioning module home page",
+                                    "User selects Service Provider -> Search",
+                                    "User enters company name into search bar and clicks Search",
+                                    "System displays matching Service Providers in table with columns No, Service Provider ID, Company name, Enabled, Change Status",
+                                    "User can click on Service Provider ID to view/edit SP details and SLAs",
+                                    "User can click on NCS links to view/edit SLA parameters"
+                                ]
+                            }
+                        ],
+                        "Related_Sub_Sections": []
+                    },
+                    {
+                        "Sub_Section_ID": "2.1.3",
+                        "Sub_Section_Name": "Service Provider Dashboard",
+                        "Type": "Action",
+                        "Requirements": [
+                            {
+                                "REQ_ID": "REQ-SP-DSB 1",
+                                "Description": "Users with the ROLE_VIEW_DASHBOARD permission shall be able to view a dashboard displaying relevant information for a specific service provider by searching using the service provider company name."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-DSB 2",
+                                "Description": "Display SP dashboard information including Service Provider Description, Service Provider (display format '{Service Provider} {Service Provider Id}'), Enabled status, Application ID (auto-generated), Application Name, SMS shortcode, MMS shortcode, State of application."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-DSB 3",
+                                "Description": "User should be able to download the information as a CSV with the specified fields."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-DSB 4",
+                                "Description": "Service Providers shall be displayed as clickable links; clicking opens related SP information."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-DSB 4.1",
+                                "Description": "Go Back button should redirect user to previous screen."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-DSB 5",
+                                "Description": "Applications under each Service Provider shall be displayed as clickable links; clicking opens related application information."
+                            },
+                            {
+                                "REQ_ID": "REQ-SP-DSB 5.1",
+                                "Description": "Go Back button from application view should redirect user to previous screen."
+                            }
+                        ],
+                        "Fields": [
+                            {
+                                "Field_Name": "Dashboard Display Fields",
+                                "Type": "Structured",
+                                "Constraints": {},
+                                "Validation_Rules": [],
+                                "Error_Responses": [],
+                                "Details": [
+                                    "serviceProviderId",
+                                    "serviceproviderCompanyname",
+                                    "serviceproviderAddress",
+                                    "serviceproviderDescription",
+                                    "serviceproviderUserlist",
+                                    "serviceproviderMarketingUserlist",
+                                    "serviceproviderWhitelistedUserList",
+                                    "serviceproviderAllowedNcsList",
+                                    "serviceproviderStatus",
+                                    "applicationId",
+                                    "applicationName",
+                                    "applicationDescription",
+                                    "applicationAllowedHostAddresses",
+                                    "applicationConnectionType",
+                                    "applicationWsPassword",
+                                    "applicationAllowedNcsList",
+                                    "isSmsMoAllowed",
+                                    "smsShortcode",
+                                    "smsKeywords",
+                                    "smsMoConnectionUrl",
+                                    "smsMoallowedParties",
+                                    "smsMoChargingType",
+                                    "smsMoFreeServicetype",
+                                    "smsMoFreeServiceDescription",
+                                    "smsMoFixedFlatRateServicetype",
+                                    "smsMoFixedFlatRateServiceDescription",
+                                    "smsMoFixedFlatRateFixedChargingValue",
+                                    "smsMoFixedFlatRateIsTaxApplied",
+                                    "smsMoKeywordChargePairKeyword",
+                                    "smsMoKeywordChargePairServicetype",
+                                    "smsMoKeywordChargePairServiceDescription",
+                                    "smsMoKeywordChargePairChargingvalue",
+                                    "smsMoKeywordChargePairIsTaxApplied",
+                                    "smsMoMerchantId",
+                                    "smsMoContentType",
+                                    "smsMoUnitCost",
+                                    "smsMoCreditLimit",
+                                    "smsMoBalanceType",
+                                    "isSmsMtAllowed",
+                                    "smsMtBillingId",
+                                    "smsMtDefaultSenderAddress",
+                                    "smsMtConnectionUrlDeliveryReport",
+                                    "smsMtChargeeField",
+                                    "smsMtAllowedParties",
+                                    "smsMtChargingType",
+                                    "smsMtLocalFreeServicetype",
+                                    "smsMtLocalFreeServiceDescription",
+                                    "smsMtGlobalFreeServicetype",
+                                    "smsMtGlobalFreeServiceDescription",
+                                    "smsMtLocalFixedFlatRateServicetype",
+                                    "smsMtLocalFixedFlatRateServiceDescription",
+                                    "smsMtLocalFixedFlatRateFixedChargingValue",
+                                    "smsMtLocalFixedFlatRateIsTaxApplied",
+                                    "smsMtLocalFixedFlatRateContentType",
+                                    "smsMtLocalFixedFlatRateUnitCost",
+                                    "smsMtLocalFixedFlatRateCreditLimit",
+                                    "smsMtGlobalFixedFlatRateServicetype",
+                                    "smsMtGlobalFixedFlatRateServiceDescription",
+                                    "smsMtGlobalFixedFlatRateFixedChargingValue",
+                                    "smsMtGlobalFixedFlatRateIsTaxApplied",
+                                    "smsMtGlobalFixedFlatRateContentType",
+                                    "smsMtGlobalFixedFlatRateUnitCost",
+                                    "smsMtGlobalFixedFlatRateCreditLimit",
+                                    "smsMtLocalServicetypeValueListServicetype",
+                                    "smsMtLocalServicetypeValueListServiceDescription",
+                                    "smsMtLocalServicetypeValueListMinChargingValue",
+                                    "smsMtLocalServicetypeValueListMaxChargingValue",
+                                    "smsMtLocalServicetypeValueListIsTaxApplied",
+                                    "smsMtLocalServicetypeValueListContentType",
+                                    "smsMtLocalServicetypeValueListUnitCost",
+                                    "smsMtLocalServicetypeValueListCreditLimit",
+                                    "smsMtGlobalServicetypeValueListServicetype",
+                                    "smsMtGlobalServicetypeValueListServiceDescription",
+                                    "smsMtGlobalServicetypeValueListMinChargingValue",
+                                    "smsMtGlobalServicetypeValueListMaxChargingValue",
+                                    "smsMtGlobalServicetypeValueListIsTaxApplied",
+                                    "smsMtGlobalServicetypeValueListContentType",
+                                    "smsMtGlobalServicetypeValueListUnitCost",
+                                    "smsMtGlobalServicetypeValueListCreditLimit",
+                                    "smsMtMerchantId",
+                                    "smsMtBalanceType",
+                                    "smsAlias",
+                                    "isMmsMoAllowed",
+                                    "mmsShortcode",
+                                    "mmsKeywords",
+                                    "mmsMoAllowedMimeTypes",
+                                    "mmsMoConnectionUrl",
+                                    "mmsMoAllowedParties",
+                                    "mmsMoChargingType",
+                                    "mmsMoFreeServicetype",
+                                    "mmsMoFreeServiceDescription",
+                                    "mmsMoFixedFlatRateServicetype",
+                                    "mmsMoFixedFlatRateServiceDescription",
+                                    "mmsMoFixedFlatRateFixedChargingValue",
+                                    "mmsMoFixedFlatRateIsTaxApplied",
+                                    "mmsMoKeywordChargePairKeyword",
+                                    "mmsMoKeywordChargePairServicetype",
+                                    "mmsMoKeywordChargePairServiceDescription",
+                                    "mmsMoKeywordChargePairChargingvalue",
+                                    "mmsMoKeywordChargePairIsTaxApplied",
+                                    "mmsMoMerchantId",
+                                    "mmsMoContentType",
+                                    "mmsMoUnitCost",
+                                    "mmsMoCreditLimit",
+                                    "mmsMoBalanceType",
+                                    "isMmsMtAllowed",
+                                    "mmsMtBillingId",
+                                    "mmsMtDefaultSenderAddress",
+                                    "mmsMtConnectionUrlDeliveryReport",
+                                    "mmsMtChargeeField",
+                                    "mmsMtAllowedParties",
+                                    "mmsMtAllowedMimeTypes",
+                                    "mmsMtChargingType",
+                                    "mmsMtLocalFreeServicetype",
+                                    "mmsMtLocalFreeServiceDescription",
+                                    "mmsMtGlobalFreeServicetype",
+                                    "mmsMtGlobalFreeServiceDescription",
+                                    "mmsMtLocalFixedFlatRateServicetype",
+                                    "mmsMtLocalFixedFlatRateServiceDescription",
+                                    "mmsMtLocalFixedFlatRateFixedChargingValue",
+                                    "mmsMtLocalFixedFlatRateIsTaxApplied",
+                                    "mmsMtLocalFixedFlatRateCreditLimit",
+                                    "mmsMtLocalFixedFlatRateContentType",
+                                    "mmsMtLocalFixedFlatRateUnitCost",
+                                    "mmsMtGlobalFixedFlatRateServicetype",
+                                    "mmsMtGlobalFixedFlatRateServiceDescription",
+                                    "mmsMtGlobalFixedFlatRateFixedChargingValue",
+                                    "mmsMtGlobalFixedFlatRateIsTaxApplied",
+                                    "mmsMtGlobalFixedFlatRateCreditLimit",
+                                    "mmsMtGlobalFixedFlatRateContentType",
+                                    "mmsMtGlobalFixedFlatRateUnitCost",
+                                    "mmsMtLocalServicetypeValueListServicetype",
+                                    "mmsMtLocalServicetypeValueListServiceDescription",
+                                    "mmsMtLocalServicetypeValueListMinChargingValue",
+                                    "mmsMtLocalServicetypeValueListMaxChargingValue",
+                                    "mmsMtLocalServicetypeValueListIsTaxApplied",
+                                    "mmsMtLocalServicetypeValueListCreditLimit",
+                                    "mmsMtLocalServicetypeValueListContentType",
+                                    "mmsMtLocalServicetypeValueListUnitCost",
+                                    "mmsMtGlobalServicetypeValueListServicetype",
+                                    "mmsMtGlobalServicetypeValueListServiceDescription",
+                                    "mmsMtGlobalServicetypeValueListMinChargingValue",
+                                    "mmsMtGlobalServicetypeValueListMaxChargingValue",
+                                    "mmsMtGlobalServicetypeValueListIsTaxApplied",
+                                    "mmsMtGlobalServicetypeValueListCreditLimit",
+                                    "mmsMtGlobalServicetypeValueListContentType",
+                                    "mmsMtGlobalServicetypeValueListUnitCost",
+                                    "mmsMtMerchantId",
+                                    "mmsMtBalanceType",
+                                    "mmsAlias",
+                                    "isUssdMoAllowed",
+                                    "ussdMoServiceCode",
+                                    "ussdMoGatewaySystemId",
+                                    "ussdMoGatewayPassword",
+                                    "ussdMoConnectionUrl",
+                                    "ussdMoAllowedParties",
+                                    "ussdMoChargingType",
+                                    "ussdMoVlrWhitelistedUsers",
+                                    "ussdMoVlrBlacklistedUsers",
+                                    "ussdMoFreeServicetype",
+                                    "ussdMoFreeServiceDescription",
+                                    "ussdMoFixedFlatRateServicetype",
+                                    "ussdMoFixedFlatRateServiceDescription",
+                                    "ussdMoFixedFlatRateFixedChargingValue",
+                                    "ussdMoFixedFlatRateIsTaxApplied",
+                                    "ussdMoMerchantId",
+                                    "ussdMoContentType",
+                                    "ussdMoUnitCost",
+                                    "ussdMoCreditLimit",
+                                    "ussdMoBalanceType",
+                                    "isUssdMtAllowed",
+                                    "ussdMtServiceCode",
+                                    "ussdMtGatewaySystemId",
+                                    "ussdMtGatewayPassword",
+                                    "ussdMtAllowedParties",
+                                    "ussdMtChargingType",
+                                    "ussdMtFreeServicetype",
+                                    "ussdMtFreeServiceDescription",
+                                    "ussdMtFixedFlatRateServicetype",
+                                    "ussdMtFixedFlatRateServiceDescription",
+                                    "ussdMtFixedFlatRateFixedChargingValue",
+                                    "ussdMtFixedFlatRateIsTaxApplied",
+                                    "ussdMtServicetypeValueListServicetype",
+                                    "ussdMtServicetypeValueListServiceDescription",
+                                    "ussdMtServicetypeValueListMinChargingValue",
+                                    "ussdMtServicetypeValueListMaxChargingValue",
+                                    "ussdMtServicetypeValueListIsTaxApplied",
+                                    "ussdMtMerchantId",
+                                    "ussdMtContentType",
+                                    "ussdMtUnitCost",
+                                    "ussdMtCreditLimit",
+                                    "ussdMtBalanceType",
+                                    "wapBillingId",
+                                    "wapDefaultSenderAddress",
+                                    "wapChargeeField",
+                                    "wapConnectionUrlDeliveryReport",
+                                    "wapAllowedParties",
+                                    "wapChargingType",
+                                    "wapLocalFreeServicetype",
+                                    "wapLocalFreeServiceDescription",
+                                    "wapGlobalFreeServicetype",
+                                    "wapGlobalFreeServiceDescription",
+                                    "wapLocalFixedFlatRateServicetype",
+                                    "wapLocalFixedFlatRateServiceDescription",
+                                    "wapLocalFixedFlatRateFixedChargingValue",
+                                    "wapLocalFixedFlatRateIsTaxApplied",
+                                    "wapLocalFixedFlatRateCreditLimit",
+                                    "wapLocalFixedFlatRateContentType",
+                                    "wapLocalFixedFlatRateUnitCost",
+                                    "wapGlobalFixedFlatRateServicetype",
+                                    "wapGlobalFixedFlatRateServiceDescription",
+                                    "wapGlobalFixedFlatRateFixedChargingValue",
+                                    "wapGlobalFixedFlatRateIsTaxApplied",
+                                    "wapGlobalFixedFlatRateCreditLimit",
+                                    "wapGlobalFixedFlatRateContentType",
+                                    "wapGlobalFixedFlatRateUnitCost",
+                                    "wapLocalServicetypeValueListServicetype",
+                                    "wapLocalServicetypeValueListServiceDescription",
+                                    "wapLocalServicetypeValueListMinChargingValue",
+                                    "wapLocalServicetypeValueListMaxChargingValue",
+                                    "wapLocalServicetypeValueListIsTaxApplied",
+                                    "wapLocalServicetypeValueListCreditLimit",
+                                    "wapLocalServicetypeValueListContentType",
+                                    "wapLocalServicetypeValueListUnitCost",
+                                    "wapGlobalServicetypeValueListServicetype",
+                                    "wapGlobalServicetypeValueListServiceDescription",
+                                    "wapGlobalServicetypeValueListMinChargingValue",
+                                    "wapGlobalServicetypeValueListMaxChargingValue",
+                                    "wapGlobalServicetypeValueListIsTaxApplied",
+                                    "wapGlobalServicetypeValueListCreditLimit",
+                                    "wapGlobalServicetypeValueListContentType",
+                                    "wapGlobalServicetypeValueListUnitCost",
+                                    "wapMerchantId",
+                                    "wapBalanceType",
+                                    "basAllowedParties",
+                                    "basAllowedServices",
+                                    "basServicetype",
+                                    "basServiceDdescription",
+                                    "basMinChargingValue",
+                                    "basMaxChargingValue",
+                                    "basTaxApplied",
+                                    "basMerchantId",
+                                    "basContentType",
+                                    "basUnitCost",
+                                    "basCreditLimit",
+                                    "basBalanceType"
+                                ]
+                            }
+                        ],
+                        "UI_Elements": [
+                            {
+                                "Label": "SP Dashboard search box",
+                                "Type": "Search Box",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "Download CSV button",
+                                "Type": "Button",
+                                "Identifier": null
+                            }
+                        ],
+                        "Flows": [
+                            {
+                                "Steps": [
+                                    "User navigates to SP Dashboard",
+                                    "User searches SP by company name",
+                                    "System displays SP dashboard with SP and application details",
+                                    "User may download full SP/application details as CSV (columns specified)"
+                                ]
+                            }
+                        ],
+                        "Related_Sub_Sections": []
+                    },
+                    {
+                        "Sub_Section_ID": "2.1.4",
+                        "Sub_Section_Name": "Disable a Service Provider",
+                        "Type": "Action",
+                        "Requirements": [
+                            {
+                                "REQ_ID": "REQ-DIS-ESP 1",
+                                "Description": "Upon clicking 'Disable' in the Change Status column, the system shall provide the ability to disable the SP profile status."
+                            },
+                            {
+                                "REQ_ID": "REQ-DIS-ESP 2",
+                                "Description": "After disabling the SP profile successfully, display a success message and update Change Status column to 'Enable' for the respective disabled SP profile."
+                            },
+                            {
+                                "REQ_ID": "REQ-DIS-ESP 3",
+                                "Description": "Change of the Service Provider's status will be notified by an email sent from SP-Admin to SP-User and other configured users. Status can be either 'Active' or 'Blocked'."
+                            }
+                        ],
+                        "Fields": [
+                            {
+                                "Field_Name": "Change Status action",
+                                "Type": "Action",
+                                "Constraints": {},
+                                "Validation_Rules": [],
+                                "Error_Responses": []
+                            }
+                        ],
+                        "UI_Elements": [
+                            {
+                                "Label": "Disable link/button in Change Status column",
+                                "Type": "Link/Button",
+                                "Identifier": null
+                            }
+                        ],
+                        "Notifications": [
+                            {
+                                "Trigger": "SP status changed (Disable)",
+                                "Email_Template": {
+                                    "Subject": "[M1-SDP] Service Provider <service-provider> status changed.",
+                                    "From": "Admin@m1.com.sg",
+                                    "To": [
+                                        "SP-User"
+                                    ],
+                                    "Cc": [
+                                        "Marketing-User"
+                                    ],
+                                    "Content_Template": "[serviceprovider_companyname]\nPrevious Status : [previous-status]\nNew Status : [new-status]\nRemarks : [remarks]"
+                                }
+                            }
+                        ],
+                        "Flows": [
+                            {
+                                "Steps": [
+                                    "User clicks 'Disable' for a Service Provider in search results",
+                                    "System disables the SP profile and updates status",
+                                    "System displays success message and updates Change Status link to 'Enable'",
+                                    "System sends notification email to configured recipients with previous and new status"
+                                ]
+                            }
+                        ],
+                        "Related_Sub_Sections": []
+                    },
+                    {
+                        "Sub_Section_ID": "2.1.5",
+                        "Sub_Section_Name": "Enable a Service Provider",
+                        "Type": "Action",
+                        "Requirements": [
+                            {
+                                "REQ_ID": "REQ-ENA-ESP 1",
+                                "Description": "User shall be able to Enable the SP profile again upon clicking on 'Enable' in the Change Status column for the respective disabled SP profile."
+                            },
+                            {
+                                "REQ_ID": "REQ-ENA-ESP 2",
+                                "Description": "After enabling the SP profile successfully, display a success message and update Change Status column to 'Disable' for the respective enabled SP profile."
+                            }
+                        ],
+                        "Fields": [],
+                        "UI_Elements": [
+                            {
+                                "Label": "Enable link/button in Change Status column",
+                                "Type": "Link/Button",
+                                "Identifier": null
+                            }
+                        ],
+                        "Flows": [
+                            {
+                                "Steps": [
+                                    "User clicks 'Enable' for a disabled Service Provider in search results",
+                                    "System enables the SP profile and updates status",
+                                    "System displays success message and updates Change Status link to 'Disable'"
+                                ]
+                            }
+                        ],
+                        "Related_Sub_Sections": []
+                    },
+                    {
+                        "Sub_Section_ID": "2.1.6",
+                        "Sub_Section_Name": "Service Provider Profile Update",
+                        "Type": "Action",
+                        "Requirements": [
+                            {
+                                "REQ_ID": "REQ-SPP-PRO 1",
+                                "Description": "When a SP-user logs in to the Provisioning module, the home page shall be displayed for SP Users."
+                            },
+                            {
+                                "REQ_ID": "REQ-SPP-PRO 2",
+                                "Description": "Upon clicking the 'Profile' link under Service Provider on the homepage, the SP user shall be able to view the list of SPs to which they have been assigned by the admin."
+                            },
+                            {
+                                "REQ_ID": "REQ-SPP-PRO 3",
+                                "Description": "SP user shall be able to edit the Address and the Description of the SP profile by clicking on the Service Provider Id."
+                            },
+                            {
+                                "REQ_ID": "REQ-SPP-PRO 4",
+                                "Description": "Clicking on 'Go back' button shall redirect the user back to the list of SP profiles assigned to the logged in SP user."
+                            },
+                            {
+                                "REQ_ID": "REQ-SPP-PRO 5",
+                                "Description": "Upon user confirmation of updates, display success message: 'Service Provider updated successfully.'"
+                            }
+                        ],
+                        "Fields": [
+                            {
+                                "Field_Name": "Editable: Address",
+                                "Type": "String",
+                                "Constraints": {
+                                    "Mandatory": false,
+                                    "MaxLength": 255
+                                },
+                                "Validation_Rules": [
+                                    "If provided, length must be less than 255 characters"
+                                ],
+                                "Error_Responses": [
+                                    "Address should be less than 255 characters"
+                                ]
+                            },
+                            {
+                                "Field_Name": "Editable: Description",
+                                "Type": "String",
+                                "Constraints": {
+                                    "Mandatory": false,
+                                    "MaxLength": 255
+                                },
+                                "Validation_Rules": [
+                                    "If provided, length must be less than 255 characters"
+                                ],
+                                "Error_Responses": [
+                                    "Description should be less than 255 characters"
+                                ]
+                            }
+                        ],
+                        "UI_Elements": [
+                            {
+                                "Label": "Profile link under Service Provider (SP user view)",
+                                "Type": "Link",
+                                "Identifier": null
+                            },
+                            {
+                                "Label": "Go back button",
+                                "Type": "Button",
+                                "Identifier": null
+                            }
+                        ],
+                        "Flows": [
+                            {
+                                "Steps": [
+                                    "SP user logs in and is shown Provisioning Module home page for SP Users",
+                                    "SP user clicks 'Profile' under Service Provider",
+                                    "System shows list of SPs assigned to the user",
+                                    "User clicks on Service Provider Id to view profile",
+                                    "User edits Address and/or Description fields and clicks Confirm/Save",
+                                    "System updates profile and displays 'Service Provider updated successfully.'",
+                                    "User can click 'Go back' to return to SP list"
+                                ]
+                            }
+                        ],
+                        "Related_Sub_Sections": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "Section_ID": "3",
+        "Section_Name": "Appendix A – Profile Attributes",
+        "Sub_Sections": [
+            {
+                "Sub_Section_ID": "3.1",
+                "Sub_Section_Name": "Service Provider Parameters",
+                "Type": "REFERENCE",
+                "Entries": [
+                    {
+                        "Parameter_Name": "serviceprovider_id",
+                        "Description": "To identify a ServiceProvider uniquely. This is required for the cdr creation."
+                    },
+                    {
+                        "Parameter_Name": "serviceprovider_companyname",
+                        "Description": "This is the unique company name for a ServiceProvider."
+                    },
+                    {
+                        "Parameter_Name": "serviceprovider_address",
+                        "Description": "This address of the ServiceProvider."
+                    },
+                    {
+                        "Parameter_Name": "serviceprovider_description",
+                        "Description": "A small description about the ServiceProvider."
+                    },
+                    {
+                        "Parameter_Name": "serviceprovider_status",
+                        "Description": "Status can have 'Active' or 'Blocked'. Admin can set the status to control a particular service provider."
+                    },
+                    {
+                        "Parameter_Name": "serviceprovider_userlist",
+                        "Description": "UI Service Provider type user's list of reference to be assigned for a ServiceProvider."
+                    },
+                    {
+                        "Parameter_Name": "marketing_userlist",
+                        "Description": "List of marketing users who can monitor this particular service provider and their applications."
+                    }
+                ]
+            },
+            {
+                "Sub_Section_ID": "3.2",
+                "Sub_Section_Name": "Application Parameters",
+                "Type": "REFERENCE",
+                "Entries": [
+                    {
+                        "Parameter_Name": "application_name",
+                        "Description": "Unique value required for the cdr creation."
+                    },
+                    {
+                        "Parameter_Name": "application_state",
+                        "Description": "Current state of the application: Initial-state/Testbed-state/Limited-Production/Production/Suspended/Retired"
+                    },
+                    {
+                        "Parameter_Name": "application_description",
+                        "Description": "Description about the application."
+                    },
+                    {
+                        "Parameter_Name": "is_manager_approved_production",
+                        "Description": "Specify whether manager has approved the application for production."
+                    },
+                    {
+                        "Parameter_Name": "creation_state_timestamp",
+                        "Description": "Timestamp when application reached the creation state."
+                    },
+                    {
+                        "Parameter_Name": "Testbed_state_timestamp",
+                        "Description": "Timestamp when application reached the testbed state."
+                    },
+                    {
+                        "Parameter_Name": "Limited_production_timestamp",
+                        "Description": "Timestamp value for limited production."
+                    },
+                    {
+                        "Parameter_Name": "suspended_state_timestamp",
+                        "Description": "Timestamp when application reached suspended state."
+                    },
+                    {
+                        "Parameter_Name": "retired_state_timestamp",
+                        "Description": "Timestamp when application reached retired state."
+                    },
+                    {
+                        "Parameter_Name": "production_timestamp",
+                        "Description": "Timestamp when application reached production."
+                    },
+                    {
+                        "Parameter_Name": "parent_service_provider_id",
+                        "Description": "Reference to the Parent ServiceProvider's id."
+                    },
+                    {
+                        "Parameter_Name": "Testbed_sla",
+                        "Description": "Reference to the TestBed type SLA Object."
+                    },
+                    {
+                        "Parameter_Name": "production_sla",
+                        "Description": "Reference to the Production type SLA Object."
+                    },
+                    {
+                        "Parameter_Name": "application_host_location",
+                        "Description": "Where the Application is hosted. Possible values: 'In M1', 'External in Singapore', 'External in Overseas'. Used for Email-notification."
+                    },
+                    {
+                        "Parameter_Name": "branding_type",
+                        "Description": "Branding Type of the Application: 'M1 Branded' or 'Corporate Customer'. Used for Email-notification."
+                    },
+                    {
+                        "Parameter_Name": "physical_connectivity",
+                        "Description": "Specifies how the Application is going to connect to our system: 'Leased Line', 'VPN', 'Internet'. Used for Email-notification."
+                    }
+                ]
+            },
+            {
+                "Sub_Section_ID": "3.3",
+                "Sub_Section_Name": "GUI User Parameters",
+                "Type": "REFERENCE",
+                "Entries": [
+                    {
+                        "Parameter_Name": "username",
+                        "Description": "Unique username required to log into GUI system."
+                    },
+                    {
+                        "Parameter_Name": "password",
+                        "Description": "Password required to log into GUI system."
+                    },
+                    {
+                        "Parameter_Name": "contact_number",
+                        "Description": "Contact number of the user."
+                    },
+                    {
+                        "Parameter_Name": "email_address",
+                        "Description": "Email address of the user."
+                    },
+                    {
+                        "Parameter_Name": "usergroup_id",
+                        "Description": "User Group's id which the user belongs to."
+                    },
+                    {
+                        "Parameter_Name": "user_state",
+                        "Description": "User can be in Active or Blocked state."
+                    }
+                ]
+            },
+            {
+                "Sub_Section_ID": "3.4",
+                "Sub_Section_Name": "Dedicated Alias Regex Pattern Guide",
+                "Type": "REFERENCE",
+                "Content_Summary": "Detailed summary of regular-expression constructs and guidelines for alias patterns, character classes, quantifiers, groups, Unicode support and examples as listed in the document.",
+                "Related_Document_Reference": "Regex constructs listed in Appendix A Section 3.4"
+            }
+        ]
+    },
+    {
+        "Section_ID": "4",
+        "Section_Name": "Appendix B – SLA SP Level Attributes",
+        "Sub_Sections": [
+            {
+                "Sub_Section_ID": "4.1",
+                "Sub_Section_Name": "General SLA",
+                "Type": "REFERENCE",
+                "Entries": [
+                    {
+                        "Name": "whitelisted_user_list",
+                        "Description": "White Listed user list.",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory"
+                    },
+                    {
+                        "Name": "blacklisted_user_list",
+                        "Description": "Black Listed user list.",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Optional"
+                    },
+                    {
+                        "Name": "allowed_ncs_list",
+                        "Description": "Possible values: SMS/ MMS/ Billing/ WAP push/ USSD or combination.",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory"
+                    }
+                ]
+            },
+            {
+                "Sub_Section_ID": "4.2",
+                "Sub_Section_Name": "SMS SLA Attributes",
+                "Type": "REFERENCE",
+                "Entries": [
+                    {
+                        "Name": "sms_mo_max_msg_day",
+                        "Description": "No. of Maximum MO msgs per day. Optional; if not supplied msg/day enforcement will not be enforced.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Optional (conditional on is_sms_mo_allowed)"
+                    },
+                    {
+                        "Name": "sms_mo_max_msg_second",
+                        "Description": "No. of Maximum MO msgs per second.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory (conditional on is_sms_mo_allowed)"
+                    },
+                    {
+                        "Name": "sms_mt_max_recipients_per_day",
+                        "Description": "No. of Maximum MT recipients per day. Optional; if not supplied msg/day enforcement will not be enforced.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Optional (conditional on is_sms_mt_allowed)"
+                    },
+                    {
+                        "Name": "sms_mt_max_recipients_per_second",
+                        "Description": "No. of Maximum MT recipients per second.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory (conditional on is_sms_mt_allowed)"
+                    }
+                ]
+            },
+            {
+                "Sub_Section_ID": "4.3",
+                "Sub_Section_Name": "MMS SLA Attributes",
+                "Type": "REFERENCE",
+                "Entries": [
+                    {
+                        "Name": "mms_mo_max_msg_day",
+                        "Description": "No. of Maximum MO msgs per day. Optional if not supplied enforcement not enforced.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Optional (conditional on is_mms_mo_allowed)"
+                    },
+                    {
+                        "Name": "mms_mo_max_msg_second",
+                        "Description": "No. of Maximum MO msgs per second.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory (conditional on is_mms_mo_allowed)"
+                    },
+                    {
+                        "Name": "mms_mt_max_recipients_day",
+                        "Description": "No. of Maximum MT recipients per day. Optional if not supplied enforcement not enforced.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Optional (conditional on is_mms_mt_allowed)"
+                    },
+                    {
+                        "Name": "mms_mt_max_recipients_second",
+                        "Description": "No. of Maximum MT recipients per second.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory (conditional on is_mms_mt_allowed)"
+                    }
+                ]
+            },
+            {
+                "Sub_Section_ID": "4.4",
+                "Sub_Section_Name": "BAS SLA Attributes",
+                "Type": "REFERENCE",
+                "Entries": [
+                    {
+                        "Name": "bas_max_billing_day",
+                        "Description": "No. of Maximum BAS incoming requests per day. Optional; if not supplied enforcement not enforced.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Optional"
+                    },
+                    {
+                        "Name": "bas_max_billing_second",
+                        "Description": "No. of Maximum Billing msgs per second.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory"
+                    }
+                ]
+            },
+            {
+                "Sub_Section_ID": "4.5",
+                "Sub_Section_Name": "WAPPUSH SLA Attributes",
+                "Type": "REFERENCE",
+                "Entries": [
+                    {
+                        "Name": "wap_push_max_recipients_day",
+                        "Description": "No. of Maximum WAP push recipients per day. Optional if not supplied enforcement not enforced.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Optional"
+                    },
+                    {
+                        "Name": "wap_push_max_recipients_second",
+                        "Description": "No. of Maximum WAP push recipients per second.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory"
+                    }
+                ]
+            },
+            {
+                "Sub_Section_ID": "4.6",
+                "Sub_Section_Name": "USSD SLA Attributes",
+                "Type": "REFERENCE",
+                "Entries": [
+                    {
+                        "Name": "ussd_mo_max_msg_day",
+                        "Description": "No. of Maximum MO msgs per day. Optional if not supplied enforcement not enforced.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Optional"
+                    },
+                    {
+                        "Name": "ussd_mo_max_msg_second",
+                        "Description": "No. of Maximum MO msgs per second.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory"
+                    },
+                    {
+                        "Name": "ussd_mt_max_recipients_per_day",
+                        "Description": "No. of Maximum MT recipients per day. Optional if not supplied enforcement not enforced.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Optional"
+                    },
+                    {
+                        "Name": "ussd_mt_max_recipients_per_second",
+                        "Description": "No. of Maximum MT recipients per second.",
+                        "Validation": "Should be a number",
+                        "User_Type": "OPERATIONS_LEVEL",
+                        "Mandatory_Optional": "Mandatory"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "Section_ID": "5",
+        "Section_Name": "Appendix C – User Roles and Permissions",
+        "Type": "REFERENCE",
+        "Sub_Sections": [
+            {
+                "Sub_Section_ID": "5.1",
+                "Sub_Section_Name": "User Roles and Permissions List",
+                "Entries": [
+                    {
+                        "Role": "ROLE_LOGIN_PROV",
+                        "Description": "Log in to the provisioning module."
+                    },
+                    {
+                        "Role": "ROLE_CREATE_SP",
+                        "Description": "Create service provider accounts."
+                    },
+                    {
+                        "Role": "ROLE_VIEW_SP",
+                        "Description": "View created service provider accounts list."
+                    },
+                    {
+                        "Role": "ROLE_CREATE_APP",
+                        "Description": "Create provisioning applications."
+                    },
+                    {
+                        "Role": "ROLE_LIST_DRAFTS",
+                        "Description": "View Applications saved as drafts by the service provider users."
+                    },
+                    {
+                        "Role": "ROLE_EDIT_SP",
+                        "Description": "Edit service provider accounts."
+                    },
+                    {
+                        "Role": "ROLE_SEARCH_SP",
+                        "Description": "Search service provider accounts."
+                    },
+                    {
+                        "Role": "ROLE_SEARCH_APP",
+                        "Description": "Search created applications."
+                    },
+                    {
+                        "Role": "ROLE_SP",
+                        "Description": "To identify user is a SP user."
+                    },
+                    {
+                        "Role": "ROLE_MARKERTING",
+                        "Description": "To identify user is a marketing user."
+                    },
+                    {
+                        "Role": "ROLE_PRODUCTION_OPERATION",
+                        "Description": "To identify user is a production operation user."
+                    },
+                    {
+                        "Role": "ROLE_TB_OPERATION",
+                        "Description": "To identify user is a testbed operation user."
+                    },
+                    {
+                        "Role": "ROLE_SDP_ADMIN",
+                        "Description": "To identify user is a SDP admin and more."
+                    },
+                    {
+                        "Role": "ROLE_VIEW_DASHBOARD",
+                        "Description": "Privilege for SDP Admin to see dashboard view of available SPs and Applications."
+                    },
+                    {
+                        "Role": "ROLE_SMSC_ENGINEER",
+                        "Description": "Set of the Privileges for the SMS Center Engineer."
+                    },
+                    {
+                        "Role": "ROLE_MMSC_ENGINEER",
+                        "Description": "Set of the Privileges for the MMS Center Engineer."
+                    },
+                    {
+                        "Role": "ROLE_PREPAID_IN_ENGINEER",
+                        "Description": "To identify user is Pre-Paid IN Engineer user."
+                    },
+                    {
+                        "Role": "ROLE_POSTPAID_BILLING_ENGINEER",
+                        "Description": "To identify user is Postpaid Billing Engineer user."
+                    },
+                    {
+                        "Role": "ROLE_USSD_ENGINEER",
+                        "Description": "To identify user is a USSD Engineer."
+                    },
+                    {
+                        "Role": "ROLE_NETWORK_ADMIN",
+                        "Description": "To identify user is Network Administrator user."
+                    },
+                    {
+                        "Role": "ROLE_SDP_MANAGER",
+                        "Description": "To identify the user is a SDP Manager."
+                    }
+                ],
+                "Notes": "Complete role-to-permission matrix is present in the source document. Each role may map to multiple provisioning states and privileges as specified in the SRS tables."
+            }
+        ]
+    },
+    {
+        "Section_ID": "6",
+        "Section_Name": "Appendix D – Short Code and Keywords",
+        "Sub_Sections": [
+            {
+                "Sub_Section_ID": "6.1",
+                "Sub_Section_Name": "Short Code",
+                "Type": "REFERENCE",
+                "Requirements": [
+                    {
+                        "REQ_ID": "REQ-SHT-CDE 1",
+                        "Description": "Short codes shall be used to route a request to the correct application."
+                    },
+                    {
+                        "REQ_ID": "REQ-SHT-CDE 2",
+                        "Description": "Two types of short codes can be defined: Shared short code (more than one application can have same short code; keyword used to route) and Exclusive short code (unique to one application)."
+                    },
+                    {
+                        "REQ_ID": "REQ-SHT-CDE 3",
+                        "Description": "A short code can be defined per NCS."
+                    },
+                    {
+                        "REQ_ID": "REQ-SHT-CDE 4",
+                        "Description": "The short code should be a regular expression. (Refer Appendix A Section 3.4 Dedicated Alias Regex Pattern Guide)."
+                    },
+                    {
+                        "REQ_ID": "REQ-SHT-CDE 5",
+                        "Description": "When requesting a new short code, the short code must not be accepted if the new short code is a subset of previously defined set of short codes or a previously defined short code is a subset of the new one."
+                    },
+                    {
+                        "REQ_ID": "REQ-SHT-CDE 6",
+                        "Description": "The short code assigned to an application shall be used in both production and testbed environments."
+                    },
+                    {
+                        "REQ_ID": "REQ-SHT-CDE 7",
+                        "Description": "The system should not allow the same keyword assigned to multiple applications under the same short code."
+                    }
+                ],
+                "Validation_Rules": [
+                    "Short codes are regular expressions",
+                    "No subset conflicts with existing short codes"
+                ],
+                "Related_Sub_Sections": [
+                    "3.4"
+                ]
+            },
+            {
+                "Sub_Section_ID": "6.2",
+                "Sub_Section_Name": "Keywords",
+                "Type": "REFERENCE",
+                "Requirements": [
+                    {
+                        "REQ_ID": "REQ-KEY-WRD 1",
+                        "Description": "SDP shall allow configuration of a maximum of 50 keywords per short code."
+                    },
+                    {
+                        "REQ_ID": "REQ-KEY-WRD 2",
+                        "Description": "Duplicate keywords shall not be allowed for the same short code."
+                    },
+                    {
+                        "REQ_ID": "REQ-KEY-WRD 3",
+                        "Description": "For shared short codes, routing of an incoming request to the correct application shall be based on the [short code + keyword] pair."
+                    },
+                    {
+                        "REQ_ID": "REQ-KEY-WRD 4",
+                        "Description": "For each keyword, it shall be possible to specify the charging amount."
+                    }
+                ],
+                "Constraints": {
+                    "MaxKeywordsPerShortCode": 50,
+                    "DuplicateKeywordsAllowed": false
+                }
+            }
+        ]
+    }
+]
