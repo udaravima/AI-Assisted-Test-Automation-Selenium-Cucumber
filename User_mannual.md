@@ -54,12 +54,14 @@
    ```
    src/test/resources/test.properties
    ```
+
 ---
 
 #### Setup Healenium backend
+
 1. clone Healenium latest available [Healenium Repository](https://github.com/healenium/healenium.git)
 2. run the docker compose file and bring the services up and running
-   
+
 ---
 
 ### **Step 2: OpenAI Environment & JSON Conversion**
@@ -89,6 +91,8 @@ pip install -r requirements.txt
 
 #### 📄 Convert SRS to JSON
 
+##### 1. Python Method
+
 Run the **generator script** with your SRS document:
 
 ```sh
@@ -100,6 +104,27 @@ python3 generator.py --srs2json <path_to_SRS_PDF>
   ```
   <path_to_SRS_PDF>.json
   ```
+
+Also if you want to split them into sections
+
+```sh
+python3 generator.py --srs2json <path_to_SRS_PDF> --seperate
+```
+
+Or you can specify a json file to split them into sections
+
+```sh
+python3 generator.py --seperate <path_to_SRS>.json
+```
+
+##### 2. Java Method
+
+Follow the same styles as in python
+example:
+
+```sh
+mvn exec:java -Dexec.mainClass="com.sdp.m1.Generator.Generator" -Dexec.classpathScope=test -Dexec.args="--srs2json <path_to_SRS_PDF> --seperate"
+```
 
 ---
 
@@ -145,6 +170,8 @@ pageComponents.runExtractor();
 
 #### ✍️ Generating the AI Prompt
 
+##### 1. Python Method
+
 Run the generator script with both **SRS section** and **UI components**:
 
 ```sh
@@ -152,6 +179,15 @@ python generator.py --srs <path_to_SRS_JSON_section> \
                     --ui <path_to_UI_JSON> \
                     --prefix <src/test/java/com/sdp/m1> \
 > master_prompt.txt
+```
+
+##### 2. Java Method
+
+Follow the same styles as in python
+example:
+
+```sh
+mvn exec:java -Dexec.mainClass="com.sdp.m1.Generator.Generator" -Dexec.classpathScope=test -Dexec.args="--jsrs Documents/SRS_Els/2.1.2_ServiceProviderSearch_SRS.json --ui Documents/UI_Els/page_components_home_20250904_084926.json" > master_prompt.txt
 ```
 
 * Copy the generated **prompt** into **Gemini Assist**.
@@ -179,4 +215,3 @@ For inquiries or issues, contact:
 **[udara.v@hsenidmobile.com](mailto:udara.v@hsenidmobile.com)**
 
 ---
-
