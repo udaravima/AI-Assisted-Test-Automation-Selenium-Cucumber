@@ -36,6 +36,8 @@
 * **Python**: `3.12`
 * **Java JDK**: `21`
 * **Maven**: `21`
+* **Healenium**
+* **Docker**
 
 #### ⚙️ Preparing the Selenium Test Suite
 
@@ -52,7 +54,12 @@
    ```
    src/test/resources/test.properties
    ```
+---
 
+#### Setup Healenium backend
+1. clone Healenium latest available [Healenium Repository](https://github.com/healenium/healenium.git)
+2. run the docker compose file and bring the services up and running
+   
 ---
 
 ### **Step 2: OpenAI Environment & JSON Conversion**
