@@ -5,34 +5,6 @@ This is an enhanced Selenium WebDriver test automation framework for the M1 appl
 
 ## Features
 
-### 🔐 Enhanced Login Testing
-- **Comprehensive Validation**: Tests for valid/invalid credentials, empty fields, special characters
-- **Security Testing**: SQL injection, XSS, and command injection prevention
-- **Cross-browser Support**: Chrome, Firefox, and Edge compatibility
-- **Error Handling**: Robust error handling with detailed logging
-- **Session Management**: Tests for session timeout and concurrent sessions
-
-### 🛡️ Security Testing
-- **Authentication Security**: Brute force prevention, account lockout
-- **Input Validation**: Malicious payload testing, data sanitization
-- **Authorization**: Role-based access control, unauthorized access prevention
-- **Data Protection**: Encryption, hashing, and secure data handling
-- **Security Headers**: Proper HTTP security headers validation
-
-### 📊 Dashboard & User Management
-- **Dashboard Functionality**: Widget testing, navigation, quick actions
-- **User Profile Management**: Profile updates, password changes, preferences
-- **Responsive Design**: Mobile and tablet compatibility testing
-- **Accessibility**: Screen reader compatibility, keyboard navigation
-- **Internationalization**: Multi-language support testing
-
-### ⚡ Performance Testing
-- **Load Time Testing**: Page load performance, widget loading
-- **Concurrent User Testing**: Multiple user simulation
-- **API Performance**: Response time validation
-- **Resource Usage**: Memory and CPU monitoring
-- **Scalability Testing**: System performance under load
-
 ## Project Structure
 
 ```
@@ -78,30 +50,6 @@ m1/
 - **Negative Tests**: Invalid credentials, empty fields, special characters
 - **Security Tests**: SQL injection, XSS, command injection prevention
 - **Validation Tests**: Field validation, error message verification
-
-### 2. User Management (`user-management.feature`)
-- **Profile Management**: View, update, and validate user profiles
-- **Password Management**: Change password, strength validation, history check
-- **Preferences**: Language, timezone, notification settings
-- **Security Features**: Two-factor authentication, session management
-
-### 3. Dashboard Functionality (`dashboard.feature`)
-- **Navigation**: Menu functionality, page redirections
-- **Widgets**: Dashboard widgets, data refresh, customization
-- **Responsive Design**: Mobile and tablet compatibility
-- **Performance**: Load time, data refresh, export functionality
-
-### 4. Security Testing (`security.feature`)
-- **Authentication**: Brute force prevention, account lockout
-- **Input Validation**: Malicious payload testing
-- **Authorization**: Access control, role-based permissions
-- **Data Protection**: Encryption, secure data handling
-
-### 5. Performance Testing (`performance.feature`)
-- **Load Testing**: Page load times, concurrent users
-- **API Performance**: Response times, throughput
-- **Resource Monitoring**: Memory usage, CPU utilization
-- **Scalability**: System performance under various loads
 
 ## Configuration
 
@@ -244,6 +192,7 @@ Automatic screenshot capture on test failures:
    - Verify test environment availability
    - Review test data validity
 
+4. **Check whether Cucumber docker file is correctly up and running**
 ### Debug Mode
 Enable debug logging for troubleshooting:
 ```properties
@@ -255,10 +204,8 @@ logging.file=target/debug.log
 
 ### Planned Features
 - **Parallel Execution**: Multi-threaded test execution
-- **Cloud Testing**: Integration with cloud testing platforms
-- **API Testing**: REST API test automation
-- **Mobile Testing**: Mobile app testing capabilities
-- **Visual Testing**: Screenshot comparison testing
+- **Automatic Web Component Tracking**: Automatically create a JSON structure of web components for unknown Elements.
+- **AI Assisted Automation**: Build test cases automatically to SRS Document and webElements.
 
 ### Integration Opportunities
 - **CI/CD Integration**: Jenkins, GitLab CI, GitHub Actions
