@@ -23,7 +23,7 @@ public class LoginSteps {
     private String browserType = TestConfigs.getBrowser();
 
     public LoginSteps() {
-        this.driver = TestUtils.getDriver(TestConfigs.getBrowser());
+        this.driver = TestUtils.getDriver(browserType);
         this.wait = TestUtils.getWaitDriver(driver);
         this.loginPage = new LoginPage(driver, wait);
     }
@@ -60,7 +60,7 @@ public class LoginSteps {
         TestUtils.wait(1);
     }
 
-        @Given("I am logged in  as admin successfully")
+    @Given("I am logged in as admin successfully")
     public void i_am_logged_in_as_admin_successfully() {
         i_navigate_to_the_login_page();
         i_enter_valid_username_and_password(TestConfigs.getAdminUsername(), TestConfigs.getAdminPassword());

@@ -1,4 +1,5 @@
 import argparse
+from ast import arg
 import json
 import os
 import pdfplumber
@@ -37,9 +38,18 @@ Available methods include: `getBaseUrl()`, `getAdminUsername()`, `getAdminPasswo
 ```
 
 **5. General Utility (`TestUtils.java`):**
-Use these static methods for common tasks like getting the driver instance (`TestUtils.getDriver()`) or creating explicit waits (`TestUtils.getWaitDriver()`).
+Use these static methods for common tasks like getting the driver instance (`TestUtils.getDriver()`) or creating explicit waits (`TestUtils.getWaitDriver()`)
 ```java
 {utils_example}
+```
+
+**6. Hooks (`Hooks.java`):**
+This file contains global setup and teardown logic that runs before and after each scenario.
+- **`@Before`**: A new scenario is logged. The WebDriver is initialized lazily.
+- **`@After`**: The scenario result is logged. A screenshot is automatically taken on failure (or success, if configured). Most importantly, the WebDriver is **always closed and cleaned up**.
+- **IMPLICATION**: Do NOT generate any code for taking screenshots or closing the driver (`driver.quit()`, `driver.close()`) in the Step Definitions, as it is handled automatically by the hooks.
+```java
+{hooks_example}
 ```
 ---
 
@@ -94,6 +104,7 @@ Provide three separate, complete, and immediately usable code blocks for the fol
 2. A new Java Page Object class.
 3. A new Java Step Definitions class.
 """
+
 MASTER_PARSER_PROMPT = """ROLE: You are an Quality Assurance Engineer and a System Requirement Analysis that parse SRS Document into JSON. Produce STRICT, VALID JSON only.
 
 Goal:
@@ -238,15 +249,17 @@ def generate_test_prompt(srs_json_path, ui_json_path, prefix="src/test/java/com/
 
         # Read example files
         feature_example = read_file_content(
-            project_root, 'src/test/resources/Features/service_provider_registration.feature.example')
+            project_root, 'src/test/resources/Features/service_provider_registration.feature')
         page_object_example = read_file_content(
-            project_root, f'{prefix}/Pages/ServiceProviderRegistrationPage.java.example')
+            project_root, f'{prefix}/Pages/ServiceProviderRegistrationPage.java')
         steps_example = read_file_content(
-            project_root, f'{prefix}/Steps/ServiceProviderRegistrationSteps.java.example')
+            project_root, f'{prefix}/Steps/ServiceProviderRegistrationSteps.java')
         configs_example = read_file_content(
             project_root, f'{prefix}/Utils/TestConfigs.java')
         utils_example = read_file_content(
             project_root, f'{prefix}/Utils/TestUtils.java')
+        Hooks_example = read_file_content(
+            project_root, f'{prefix}/Hooks/Hooks.java')
 
         # Read task-specific files
         with open(srs_json_path, 'r', encoding='utf-8') as f:
@@ -263,7 +276,8 @@ def generate_test_prompt(srs_json_path, ui_json_path, prefix="src/test/java/com/
             configs_example=configs_example,
             utils_example=utils_example,
             srs_json=srs_content,
-            ui_json=ui_content
+            ui_json=ui_content,
+            hooks_example=Hooks_example
         )
 
         return final_prompt
@@ -275,7 +289,7 @@ def generate_test_prompt(srs_json_path, ui_json_path, prefix="src/test/java/com/
         return None
 
 
-def srs_to_json(pdf_path):
+def srs_to_json(pdf_path, seperate=False):
     """
     Placeholder function to convert SRS PDF to JSON.
     """
@@ -291,6 +305,8 @@ def srs_to_json(pdf_path):
         # json.dump(response, f, indent=4)
         if response:
             f.write(response)
+            if seperate:
+                separate_srs_json(pdf_path, response)
         else:
             print("Error: No response from model.")
             return None
@@ -298,6 +314,40 @@ def srs_to_json(pdf_path):
     print(f"SRS JSON saved to {output_path}")
 
     return output_path
+
+
+def separate_srs_json(json_path, data_str=None):
+    """
+    Separates a JSON file containing an array of sections into individual files.
+    """
+    try:
+        if data_str is not None:
+            data = json.loads(data_str)
+        else:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+        output_dir = os.path.splitext(json_path)[0] + "_sections"
+        os.makedirs(output_dir, exist_ok=True)
+
+        for section in data:
+            section_id = section.get("Section_ID", "N/A")
+            section_name = section.get(
+                "Section_Name", "Unnamed").replace(" ", "_")
+            filename = os.path.join(
+                output_dir, f"{section_id}-{section_name}.json")
+            with open(filename, 'w', encoding='utf-8') as outfile:
+                json.dump(section, outfile, indent=4)
+            print(f"Created {filename}")
+
+        print(f"Separated JSON sections into {output_dir}")
+        return output_dir
+    except FileNotFoundError:
+        print(f"Error: JSON file not found at {json_path}")
+        return None
+    except Exception as e:
+        print(f"Error separating JSON: {e}")
+        return None
 
 
 def main():
@@ -326,19 +376,26 @@ def main():
     parser.add_argument(
         "--prefix", type=str, default="src/test/java/com/sdp/m1", help="Optional prefix for the prompt for examples\nDefault will be : `src/test/java/com/sdp/m1`."
     )
+    parser.add_argument(
+        "--separate",
+        type=str,
+        default=False,
+        help="Path to a JSON file to be separated into individual section files."
+    )
 
     args = parser.parse_args()
 
     if args.srs2json:
-        srs_to_json(args.srs2json)
+        srs_to_json(args.srs2json, args.seperate)
+    elif args.separate:
+        separate_srs_json(args.separate)
+    elif args.jsrs and args.ui:
+        prompt = generate_test_prompt(args.jsrs, args.ui, args.prefix)
+        if prompt:
+            print(prompt)
     else:
-        if not args.jsrs or not args.ui:
-            parser.error(
-                "Without --srs2json, both --jsrs and --ui are required.")
-
-    prompt = generate_test_prompt(args.jsrs, args.ui, args.prefix)
-    if prompt:
-        print(prompt)
+        parser.error(
+            "You must provide either --srs2json, --separate, or both --jsrs and --ui.")
 
 
 if __name__ == "__main__":
