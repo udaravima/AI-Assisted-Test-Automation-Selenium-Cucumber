@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Command(name = "generator", mixinStandardHelpOptions = true, version = "generator 1.0", description = "Parse SRS to JSON & Generate a master prompt for creating automated test artifacts.")
 public class Generator implements Runnable {
@@ -30,8 +31,8 @@ public class Generator implements Runnable {
     @Option(names = "--jsrs", description = "Path to the SRS JSON file containing feature requirements.")
     private String jsrs;
 
-    @Option(names = "--ui", description = "Path to the JSON file containing the extracted UI components.")
-    private String ui;
+    @Option(names = "--ui", arity = "1..*", description = "Path(s) to the JSON file(s) containing the extracted UI components.")
+    private List<String> ui;
 
     @Option(names = "--prefix", defaultValue = "src/test/java/com/sdp/m1", description = "Optional prefix for the prompt for examples\nDefault will be : `src/test/java/com/sdp/m1`.")
     private String prefix;
@@ -238,7 +239,7 @@ public class Generator implements Runnable {
         }
     }
 
-    String generateTestPrompt(String srsJsonPath, String uiJsonPath, String prefix) {
+    String generateTestPrompt(String srsJsonPath, List<String> uiJsonPaths, String prefix) {
         try {
             String projectRoot = System.getProperty("user.dir");
 
@@ -255,8 +256,13 @@ public class Generator implements Runnable {
 
             String srsContent = readFileContent(srsJsonPath);
             String uiContent = "";
-            if (uiJsonPath != null)
-                uiContent = readFileContent(uiJsonPath);
+            if (uiJsonPaths != null && !uiJsonPaths.isEmpty()) {
+                StringBuilder uiContentBuilder = new StringBuilder();
+                for (String uiPath : uiJsonPaths) {
+                    uiContentBuilder.append(readFileContent(uiPath)).append("\n");
+                }
+                uiContent = uiContentBuilder.toString();
+            }
 
             return MASTER_PROMPT_TEMPLATE
                     .replace("{feature_example}", featureExample)

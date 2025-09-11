@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -169,7 +170,7 @@ public class WebPageExtractorJSON {
         return fileName;
     }
 
-    private void extractByTag(Document doc, WebDriver driver, String tag, String type,
+    private void extractByTag(Document doc, WebDriver driver, String tag, String type, 
             List<Component> components) {
 
         Elements elements = doc.select(tag);
@@ -245,7 +246,66 @@ public class WebPageExtractorJSON {
         }
     }
 
-    private Set<Map<String, String>> fieldBuilder(Elements elements, Set<Map<String, String>> fieldSets,
+    private boolean isStructurallySimilar(PageData page1, PageData page2) {
+        if (page1.components.size() != page2.components.size()) {
+            return false;
+        }
+
+        boolean page1HasError = false;
+        boolean page2HasError = false;
+
+        // Simple structural comparison: check if components match by selector and type
+        // This ignores dynamic content like text or input values
+        for (int i = 0; i < page1.components.size(); i++) {
+            Component c1 = page1.components.get(i);
+            Component c2 = page2.components.get(i);
+
+            // Check for error components
+            boolean c1IsError = c1.classes != null && c1.classes.contains("error") && !c1.text.isEmpty();
+            boolean c2IsError = c2.classes != null && c2.classes.contains("error") && !c2.text.isEmpty();
+
+            if (c1IsError) page1HasError = true;
+            if (c2IsError) page2HasError = true;
+
+            // If one is an error component and the other is not, they are not similar
+            if (c1IsError != c2IsError) {
+                return false;
+            }
+
+            // If both are error components, compare their text content
+            if (c1IsError && c2IsError) {
+                if (!c1.text.equals(c2.text)) {
+                    return false;
+                }
+            }
+
+            // Compare key structural attributes (ignoring text for non-error components)
+            if (!c1.selector.equals(c2.selector) || !c1.type.equals(c2.type) || !c1.tag.equals(c2.tag)) {
+                return false;
+            }
+            // Optionally, compare IDs and classes if they are expected to be stable
+            if (!c1.id.equals(c2.id) || !c1.classes.equals(c2.classes)) {
+                return false;
+            }
+            // Compare actions and fields based on their selectors/types, not values
+            if (c1.actions.size() != c2.actions.size() || c1.fields.size() != c2.fields.size()) {
+                return false;
+            }
+            // Further detailed comparison of actions and fields would be needed for robust check
+            // For now, a simple size check is used.
+        }
+
+        // If we reached here, components are structurally similar, now check overall error state
+        // This handles cases where error divs might be present but empty in one page
+        // and populated in another.
+        if (page1HasError != page2HasError) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private Set<Map<String, String>> fieldBuilder(Elements elements, Set<Map<String, String>> fieldSets, 
             Document doc, ArrayList<String> ignoreTypes) {
         if (elements == null || elements.isEmpty()) {
             return fieldSets;
@@ -401,14 +461,14 @@ public class WebPageExtractorJSON {
     private String findLabelText(Document doc, Element input) {
         String id = input.id();
         if (id != null && !id.isEmpty()) {
-            Element label = doc.selectFirst("label[for=" + id + "]");
+            Element label = doc.selectFirst("label[for=\"" + id + "\"]");
             if (label != null) {
                 return label.text();
             }
         }
         String name = input.attr("name");
         if (name != null && !name.isEmpty()) {
-            Element label = doc.selectFirst("label[for=" + name + "]");
+            Element label = doc.selectFirst("label[for=\"" + name + "\"]");
             if (label != null) {
                 return label.text();
             }
@@ -461,6 +521,8 @@ public class WebPageExtractorJSON {
     public static void main(String[] args) throws Exception {
         SelfHealingDriver driver = TestUtils.getDriver(TestConfigs.getBrowser());
         SelfHealingDriverWait wait = TestUtils.getWaitDriver(driver);
+        WebPageExtractorJSON extractor = new WebPageExtractorJSON(driver, wait);
+        Scanner scanner = new Scanner(System.in);
 
         driver.get(NAV_URL);
         if (LOGIN_REQUIRED)
@@ -503,10 +565,27 @@ public class WebPageExtractorJSON {
 
         logger.info("Done waiting!");
 
-        WebPageExtractorJSON extractor = new WebPageExtractorJSON(driver, TestUtils.getWaitDriver(driver));
-        String fileName = extractor
-                .getFileName(NAV_URL);
-        extractor.runExtractor(fileName);
+        while (true) {
+            System.out
+                    .println("Enter 'e' to extract current page, 'q' to quit, or any other key to continue browsing:");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("e") || input.equalsIgnoreCase("extract")) {
+                try {
+                    String fileName = extractor.getFileName(driver.getCurrentUrl());
+                    extractor.runExtractor(fileName);
+                    System.out.println("Page components extracted to: " + fileName);
+                } catch (Exception e) {
+                    logger.severe("Failed to extract page components: " + e.getMessage());
+                }
+            } else if (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit")) {
+                System.out.println("Quitting browser.");
+                break;
+            } else {
+                System.out.println("Continuing browsing. Press Enter to bring up options again.");
+            }
+        }
+        scanner.close();
         driver.quit();
     }
 
@@ -532,7 +611,7 @@ public class WebPageExtractorJSON {
  * 
  * List of All the functions available to private
  * 
- * extractByTag(Document doc, WebDriver driver, String tag, String type,
+ * extractByTag(Document doc, WebDriver driver, String tag, String type, 
  * List<Component> components) -> void : Extract components by HTML tag
  * writeFile(PageData pageData, String fileName) -> void : Write
  * components to a JSON file
@@ -542,7 +621,7 @@ public class WebPageExtractorJSON {
  * element
  * extractPageData() -> PageData : Extract all components from the
  * current page
- * fieldBuilder(Elements elements, Set<Map<String, String>> fields) -> void :
+ * fieldBuilder(Elements elements, Set<Map<String, String>> fields) -> void : 
  * Build form fields from the given elements
  * getCssSelector(Element el, Document doc) -> String : Generate a CSS selector
  * for a given element
