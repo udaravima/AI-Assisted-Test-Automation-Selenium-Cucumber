@@ -53,7 +53,7 @@ This file contains global setup and teardown logic that runs before and after ea
 ---
 
 TASK:
-Generate a complete and correct set of test automation artifacts for the given feature. The output must be three separate, complete code blocks for the following files:
+Generate a complete and correct set of test automation artifacts for the given feature. The output must be three split, complete code blocks for the following files:
 1.  A Cucumber `.feature` file.
 2.  A Java Page Object class.
 3.  A Java Step Definitions class.
@@ -98,7 +98,7 @@ HERE IS THE CONTEXT FOR THE NEW FEATURE:
 ```
 ---
 YOUR OUTPUT:
-Provide three separate, complete, and immediately usable code blocks for the following files:
+Provide three split, complete, and immediately usable code blocks for the following files:
 1. A new `.feature` file.
 2. A new Java Page Object class.
 3. A new Java Step Definitions class.
@@ -110,7 +110,7 @@ Goal:
 - Convert an SRS excerpt into a hierarchical JSON schema with Sections → Sub_Sections (nested).
 - If a parent subsection (e.g., “Service Provider Profile Management”) lists actions like Register/Edit/Search that are described in their own numbered child subsections (e.g., 2.1.1, 2.1.2, 2.1.3), then:
   - Keep the parent as a SUMMARY (epic), DO NOT duplicate its fields.
-  - Create separate child nodes (Type: "Action") for each leaf subsection and attach their Requirements, Fields, Validation_Rules, UI_Elements, and Flows to the appropriate leaf.
+  - Create split child nodes (Type: "Action") for each leaf subsection and attach their Requirements, Fields, Validation_Rules, UI_Elements, and Flows to the appropriate leaf.
 
 Rules:
 - Preserve all section numbers exactly (e.g., "2.1.1").
@@ -365,7 +365,7 @@ def generate_test_prompt(srs_json_path, ui_json_paths, prefix="src/test/java/com
         return None
 
 
-def srs_to_json(pdf_path, seperate=False):
+def srs_to_json(pdf_path, split=False):
     """
     Placeholder function to convert SRS PDF to JSON.
     """
@@ -381,8 +381,8 @@ def srs_to_json(pdf_path, seperate=False):
         # json.dump(response, f, indent=4)
         if response:
             f.write(response)
-            if seperate:
-                separate_srs_json(pdf_path, response)
+            if split:
+                split_srs_json(pdf_path, response)
         else:
             print("Error: No response from model.")
             return None
@@ -392,9 +392,9 @@ def srs_to_json(pdf_path, seperate=False):
     return output_path
 
 
-def separate_srs_json(json_path, data_str=None):
+def split_srs_json(json_path, data_str=None):
     """
-    Separates a JSON file containing an array of sections into individual files.
+    splits a JSON file containing an array of sections into individual files.
     """
     try:
         if data_str is not None:
@@ -416,7 +416,7 @@ def separate_srs_json(json_path, data_str=None):
                 json.dump(section, outfile, indent=4)
             print(f"Created {filename}")
 
-        print(f"Separated JSON sections into {output_dir}")
+        print(f"splited JSON sections into {output_dir}")
         return output_dir
     except FileNotFoundError:
         print(f"Error: JSON file not found at {json_path}")
@@ -454,25 +454,25 @@ def main():
         "--prefix", type=str, default="src/test/java/com/sdp/m1", help="Optional prefix for the prompt for examples\nDefault will be : `src/test/java/com/sdp/m1`."
     )
     parser.add_argument(
-        "--separate",
+        "--split",
         type=str,
         default=False,
-        help="Path to a JSON file to be separated into individual section files."
+        help="Path to a JSON file to be splitd into individual section files."
     )
 
     args = parser.parse_args()
 
     if args.srs2json:
-        srs_to_json(args.srs2json, args.seperate)
-    elif args.separate:
-        separate_srs_json(args.separate)
+        srs_to_json(args.srs2json, args.split)
+    elif args.split:
+        split_srs_json(args.split)
     elif args.jsrs and args.ui:
         prompt = generate_test_prompt(args.jsrs, args.ui, args.prefix)
         if prompt:
             print(prompt)
     else:
         parser.error(
-            "You must provide either --srs2json, --separate, or both --jsrs and --ui.")
+            "You must provide either --srs2json, --split, or both --jsrs and --ui.")
 
 
 if __name__ == "__main__":
