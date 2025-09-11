@@ -1,5 +1,4 @@
 import argparse
-from ast import arg
 import json
 import os
 import pdfplumber
@@ -180,6 +179,23 @@ Output:
 
 """
 
+# Debugging
+
+
+def run_unit_test(ui_json_paths):
+    parsed_ui_jsons = []
+    for ui_path in ui_json_paths:
+        with open(ui_path, 'r', encoding='utf-8') as f:
+            parsed_ui_jsons.append(json.load(f))
+
+    merged_ui_data = merge_ui_jsons(parsed_ui_jsons)
+    # Debugging
+    with open("merged_page_data.json", 'w', encoding='utf-8') as f:
+        try:
+            json.dump(merged_ui_data, f, indent=4)
+        except Exception as e:
+            print(f"Error writing to file: {e}")
+
 
 def run_model(prompt):
     """
@@ -196,6 +212,60 @@ def run_model(prompt):
     # print Usage
     print(response.usage)
     return response.choices[0].message.content
+
+
+def merge_ui_jsons(ui_json_list):
+    merged_page_data = {"pageUrl": "", "components": []}
+    component_map = {}
+
+    for page_data in ui_json_list:
+        if "pageUrl" in page_data and not merged_page_data["pageUrl"]:
+            merged_page_data["pageUrl"] = page_data["pageUrl"]
+
+        for component in page_data.get("components", []):
+            selector = component.get("selector")
+            if not selector:  # Skip components without a selector
+                continue
+
+            if selector not in component_map:
+                # Deep copy the component to avoid modifying original data
+                component_map[selector] = json.loads(json.dumps(component))
+                # Initialize error_messages if not present
+                if "error_messages" not in component_map[selector]:
+                    component_map[selector]["error_messages"] = []
+            else:
+                # Merge existing component with new one
+                existing_component = component_map[selector]
+
+                # Merge actions and fields (assuming they are lists of dicts)
+                existing_actions = {
+                    frozenset(d.items()) for d in existing_component.get("actions", [])}
+                new_actions = {frozenset(d.items())
+                               for d in component.get("actions", [])}
+                merged_actions = existing_actions.union(new_actions)
+                existing_component["actions"] = [
+                    dict(s) for s in merged_actions]
+
+                existing_fields = {
+                    frozenset(d.items()) for d in existing_component.get("fields", [])}
+                new_fields = {frozenset(d.items())
+                              for d in component.get("fields", [])}
+                merged_fields = existing_fields.union(new_fields)
+                existing_component["fields"] = [dict(s) for s in merged_fields]
+
+                # Handle error messages: if an error div is present, add its text
+                if component.get("classes") and "error" in component["classes"] and component.get("text"):
+                    error_text = component["text"].strip()
+                    if error_text and error_text not in existing_component["error_messages"]:
+                        existing_component["error_messages"].append(error_text)
+
+                # If a component is an error type and has text, mark it as conditional
+                if component.get("classes") and "error" in component["classes"] and component.get("text"):
+                    existing_component["conditional"] = True
+
+    # Convert map back to list for the merged_page_data
+    merged_page_data["components"] = list(component_map.values())
+    return merged_page_data
 
 
 def pdf_extraction(pdf_path):
@@ -232,13 +302,13 @@ def read_file_content(base_path, file_path):
         return f"// Error reading example file: {file_path}"
 
 
-def generate_test_prompt(srs_json_path, ui_json_path, prefix="src/test/java/com/sdp/m1"):
+def generate_test_prompt(srs_json_path, ui_json_paths, prefix="src/test/java/com/sdp/m1"):
     """
     Generates a comprehensive prompt for AI-powered test generation.
 
     Args:
         srs_json_path (str): Path to the SRS JSON file.
-        ui_json_path (str): Path to the UI components JSON file.
+        ui_json_paths (list): List of paths to the UI components JSON files.
 
     Returns:
         str: The formatted master prompt with all context included.
@@ -265,8 +335,14 @@ def generate_test_prompt(srs_json_path, ui_json_path, prefix="src/test/java/com/
         with open(srs_json_path, 'r', encoding='utf-8') as f:
             srs_content = f.read()
 
-        with open(ui_json_path, 'r', encoding='utf-8') as f:
-            ui_content = f.read()
+        # Read and merge all UI JSON files
+        parsed_ui_jsons = []
+        for ui_path in ui_json_paths:
+            with open(ui_path, 'r', encoding='utf-8') as f:
+                parsed_ui_jsons.append(json.load(f))
+
+        merged_ui_data = merge_ui_jsons(parsed_ui_jsons)
+        ui_content = json.dumps(merged_ui_data, indent=4)
 
         # Format the master prompt with all the context
         final_prompt = MASTER_PROMPT_TEMPLATE.format(
@@ -293,7 +369,7 @@ def srs_to_json(pdf_path, seperate=False):
     """
     Placeholder function to convert SRS PDF to JSON.
     """
-    print(f"Converting SRS PDF at {pdf_path} to JSON...")
+    print(f"Converting SRS PDF at {pdf_path}...")
 
     pdf_text = pdf_extraction(pdf_path)
     if not pdf_text:
@@ -370,8 +446,9 @@ def main():
     )
     parser.add_argument(
         "--ui",
+        nargs='+',  # This allows multiple arguments for --ui
         type=str,
-        help="Path to the JSON file containing the extracted UI components."
+        help="Path(s) to the JSON file(s) containing the extracted UI components."
     )
     parser.add_argument(
         "--prefix", type=str, default="src/test/java/com/sdp/m1", help="Optional prefix for the prompt for examples\nDefault will be : `src/test/java/com/sdp/m1`."
